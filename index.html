@@ -128,6 +128,19 @@ nav button.active{border-bottom-color:var(--t);font-weight:500;color:var(--t)}
 </style>
 </head>
 <body>
+
+<div id="auth-overlay" style="position:fixed;inset:0;background:#f7f6f3;display:flex;align-items:center;justify-content:center;z-index:9999">
+  <div style="background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:340px;text-align:center">
+    <div style="font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#a8a8a4;margin-bottom:8px">Accesso riservato</div>
+    <h2 style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px">Casa Mantellate</h2>
+    <p style="font-size:13px;color:#6b6b67;margin-bottom:1.5rem">Inserisci la password per visualizzare il cantiere</p>
+    <input id="pass-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')tryLogin()" style="width:100%;font-family:'Outfit',sans-serif;font-size:14px;padding:10px 14px;border:.5px solid rgba(0,0,0,.2);border-radius:10px;outline:none;margin-bottom:10px;text-align:center;letter-spacing:.1em">
+    <div id="pass-error" style="display:none;font-size:12px;color:#c44a2a;margin-bottom:10px">Password non corretta — riprova</div>
+    <button onclick="tryLogin()" style="width:100%;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;padding:10px;background:#1a1a18;color:#fff;border:none;border-radius:10px;cursor:pointer">Accedi</button>
+  </div>
+</div>
+
+<div id="main-app" style="display:none">
 <div class="app">
 
 <header>
@@ -534,6 +547,34 @@ function showTab(id,btn){
 }
 
 renderWeek();renderMetrics();renderTiles();renderStanze();renderTimeline();renderOrdina();renderLista();renderLog();
+
+/* ═══ AUTH ═══════════════════════════════════════
+   CAMBIA LA PASSWORD QUI SOTTO
+   ═══════════════════════════════════════════════ */
+const AUTH_PASS = "mantellate2026";
+const AUTH_COOKIE = "cm_auth_v1";
+const AUTH_DAYS = 180;
+
+function getCookie(n){const v=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return v?v.pop():'';}
+function setCookie(n,v,d){const x=new Date();x.setTime(x.getTime()+d*864e5);document.cookie=`${n}=${v};expires=${x.toUTCString()};path=/`;}
+function tryLogin(){
+  const v=document.getElementById("pass-input").value;
+  if(v===AUTH_PASS){
+    setCookie(AUTH_COOKIE,"ok",AUTH_DAYS);
+    document.getElementById("auth-overlay").style.display="none";
+    document.getElementById("main-app").style.display="block";
+    document.getElementById("pass-error").style.display="none";
+  } else {
+    document.getElementById("pass-error").style.display="block";
+    document.getElementById("pass-input").value="";
+    document.getElementById("pass-input").focus();
+  }
+}
+if(getCookie(AUTH_COOKIE)==="ok"){
+  document.getElementById("auth-overlay").style.display="none";
+  document.getElementById("main-app").style.display="block";
+}
 </script>
+</div>
 </body>
 </html>
