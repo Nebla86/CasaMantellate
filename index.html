@@ -3,155 +3,241 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Casa Mantellate — Cantiere</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Casa Mantellate</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!--
 ╔══════════════════════════════════════════════════════════════════════╗
 ║  NOTE PER CLAUDE — ISTRUZIONI PER AGGIORNARE QUESTO FILE            ║
 ╠══════════════════════════════════════════════════════════════════════╣
 ║  PROGETTO: Ristrutturazione Casa Mantellate, Torino                  ║
-║  120 mq. Senza gas. Riscaldamento a pavimento. Canalizzata (no split)║
+║  120 mq. Senza gas. Riscaldamento a pavimento. Canalizzata.          ║
 ║                                                                      ║
-║  STRUTTURA DATI:                                                     ║
-║  DATA.rooms     → stanze con lavori + items acquisti                 ║
-║  DATA.timeline  → fasi Gantt (giorno 0 = 11 mag 2026)               ║
+║  DATA.rooms     → stanze con lavori + items                          ║
+║  DATA.timeline  → Gantt (giorno 0 = 11 mag 2026)                    ║
 ║  DATA.meta      → appuntamenti, data aggiornamento                   ║
+║  DATA.nextStops → fermate mini-timeline in alto                      ║
 ║  DATA.log       → storico [{date, text}]                             ║
 ║                                                                      ║
-║  STATI (item.s): acquistato | ordinato | scelto |                    ║
-║                  in-corso | da-decidere | da-scegliere               ║
-║                                                                      ║
-║  item.blockBy   → stringa scadenza urgente es. "entro 26 mag"        ║
-║  item.blockNote → spiegazione del vincolo                            ║
-║                                                                      ║
-║  PRIORITÀ (room.priority): essenziale | importante | procrastinabile ║
-║  (procrastinabile = badge nascosto nell'UI)                          ║
+║  item.s: acquistato|ordinato|scelto|in-corso|da-decidere|da-scegliere║
+║  item.blockBy   → scadenza urgente (stringa)                         ║
+║  item.blockNote → spiegazione vincolo                                ║
+║  room.priority: essenziale|importante|procrastinabile                ║
 ║                                                                      ║
 ║  ULTIMO AGGIORNAMENTO: 10 maggio 2026                                ║
-║  CANTIERE: piastrellature in corso; elettricista 15gg da lun 11;     ║
+║  CANTIERE: piastrellature in corso; elettricista 15gg da 11 mag;     ║
 ║  parquet dopo piastrelle (2gg attesa); tinteggiatura dopo parquet;   ║
 ║  mobili fine giugno. WARM WALL acquistato 10 mag.                    ║
 ║  Cabina armadio ordinata 16 mag. Zanzariere Cobola x9 scelte.        ║
 ╚══════════════════════════════════════════════════════════════════════╝
 -->
 <style>
-:root{--font:'Outfit',sans-serif;--bg:#f7f6f3;--surface:#fff;--border:rgba(0,0,0,.09);--bmed:rgba(0,0,0,.15);--t:#1a1a18;--t2:#6b6b67;--t3:#a8a8a4;--cacq:#2d6a2d;--bgacq:#eaf3e8;--cord:#0f6e56;--bgord:#e1f5ee;--csel:#1a5296;--bgsel:#e6f0fb;--ccor:#b35a1a;--bgcor:#faecd8;--cdec:#c44a2a;--bgdec:#faeae7;--cdsc:#666660;--bgdsc:#f1f0ec;--cess:#9b2424;--bgess:#fbeaea;--cimp:#7a4a0a;--bgimp:#faeada}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--t);font-size:14px;line-height:1.5}
-.app{max-width:960px;margin:0 auto;padding:2rem 1.5rem}
-header{margin-bottom:1.5rem}
-header h1{font-size:24px;font-weight:600;letter-spacing:-.02em}
-header p{font-size:13px;color:var(--t2);margin-top:3px}
-/* WEEK TABS */
-.wtab{background:none;border:.5px solid var(--bmed);border-radius:20px;padding:5px 12px;font-family:var(--font);font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
-.wtab:hover{color:var(--t);border-color:var(--t)}
-.wtab.active{background:var(--t);color:var(--surface);border-color:var(--t)}
-.wcnt{font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;background:rgba(255,255,255,.25);color:inherit}
+:root{
+  --font:'Geist',system-ui,sans-serif;
+  --mono:'Geist Mono',monospace;
+  --bg:#f5f4f0;
+  --surface:#ffffff;
+  --surface2:#faf9f7;
+  --border:rgba(0,0,0,.08);
+  --border2:rgba(0,0,0,.13);
+  --t:#111110;
+  --t2:#6f6e69;
+  --t3:#b5b3ac;
+  --r:10px;
+  --cacq:#1e6b1e;--bgacq:#e8f5e8;
+  --cord:#0a5c47;--bgord:#e0f2ec;
+  --csel:#1749a0;--bgsel:#e3edfc;
+  --ccor:#9a4a0a;--bgcor:#fceede;
+  --cdec:#b83010;--bgdec:#fde8e3;
+  --cdsc:#5a5955;--bgdsc:#eeede9;
+  --cess:#8b1a1a;--bgess:#fce8e8;
+  --cimp:#6b3c00;--bgimp:#faebd0;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--t);font-size:14px;line-height:1.5;min-height:100vh}
+
+/* APP SHELL */
+#auth-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;padding:1.5rem}
+.auth-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:320px;text-align:center}
+.auth-eyebrow{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
+.auth-title{font-size:22px;font-weight:600;letter-spacing:-.03em;margin-bottom:6px}
+.auth-sub{font-size:13px;color:var(--t2);margin-bottom:1.5rem}
+.auth-input{width:100%;font-family:var(--mono);font-size:15px;padding:10px 14px;border:1px solid var(--border2);border-radius:8px;outline:none;text-align:center;letter-spacing:.15em;color:var(--t);background:var(--bg);margin-bottom:8px;transition:border-color .15s}
+.auth-input:focus{border-color:var(--t)}
+.auth-error{font-size:12px;color:var(--cdec);margin-bottom:10px;display:none}
+.auth-btn{width:100%;font-family:var(--font);font-size:13px;font-weight:500;padding:10px;background:var(--t);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:opacity .15s}
+.auth-btn:hover{opacity:.85}
+
+#main-app{display:none}
+.app{max-width:900px;margin:0 auto;padding:clamp(1rem,4vw,2rem)}
+
+/* HEADER */
+.hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;gap:1rem}
+.hdr-left h1{font-size:clamp(18px,4vw,24px);font-weight:600;letter-spacing:-.03em;line-height:1.2}
+.hdr-left p{font-size:12px;color:var(--t3);margin-top:3px;font-family:var(--mono)}
+.hdr-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;margin-top:6px;flex-shrink:0;box-shadow:0 0 0 3px rgba(34,197,94,.15)}
+
+/* NEXT STOPS */
+.stops-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.25rem;overflow:hidden}
+.stops-label{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:.75rem}
+.stops-scroll{overflow-x:auto;padding-bottom:.5rem;-webkit-overflow-scrolling:touch}
+.stops-scroll::-webkit-scrollbar{height:3px}
+.stops-scroll::-webkit-scrollbar-track{background:var(--bg)}
+.stops-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.stops-track{display:flex;align-items:flex-start;gap:0;min-width:max-content;position:relative;padding-top:28px}
+.stop{display:flex;flex-direction:column;align-items:center;min-width:90px;position:relative}
+.stop-line{position:absolute;top:10px;left:50%;right:-50%;height:2px;z-index:0}
+.stop:last-child .stop-line{display:none}
+.stop-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);background:var(--surface);z-index:1;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;transition:all .3s;position:relative}
+.stop-dot.done{background:var(--t);border-color:var(--t);color:#fff}
+.stop-dot.today{background:var(--cdec);border-color:var(--cdec);box-shadow:0 0 0 4px rgba(184,48,16,.15)}
+.stop-dot.next{background:var(--surface);border-color:var(--csel);color:var(--csel)}
+.stop-meta{margin-top:6px;text-align:center}
+.stop-date{font-family:var(--mono);font-size:9px;color:var(--t3)}
+.stop-name{font-size:10px;font-weight:500;color:var(--t2);max-width:80px;text-align:center;line-height:1.3;margin-top:1px}
+.stop-dot.done+.stop-meta .stop-name{color:var(--t3)}
+.stop-dot.today+.stop-meta .stop-name,.stop-dot.today+.stop-meta .stop-date{color:var(--cdec);font-weight:600}
+
+/* WEEK BOX */
+.week-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.25rem}
+.week-tabs{display:flex;gap:6px;margin-bottom:.875rem}
+.wtab{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:none;color:var(--t2);cursor:pointer;transition:all .15s}
+.wtab:hover{border-color:var(--t);color:var(--t)}
+.wtab.active{background:var(--t);color:#fff;border-color:var(--t)}
+.wcnt{font-size:10px;font-weight:600;padding:1px 5px;border-radius:8px;background:rgba(255,255,255,.2)}
 .wtab:not(.active) .wcnt{background:var(--bgdec);color:var(--cdec)}
-.wtab.active .wcnt{background:rgba(255,255,255,.2);color:#fff}
-.wbox{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:1.5rem}
-.wbox h3{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
-.wcols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:560px){.wcols{grid-template-columns:1fr}}
-.wct{font-size:11px;font-weight:600;color:var(--t2);margin-bottom:6px}
-.arow{display:flex;gap:10px;align-items:flex-start;padding:5px 0;border-bottom:.5px solid var(--border)}
-.arow:last-child{border-bottom:none}
-.adate{font-size:11px;font-weight:600;color:var(--csel);min-width:90px;padding-top:1px}
+.arow{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border)}
+.arow:last-child{border:none}
+.adate{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--csel);min-width:95px;padding-top:1px}
 .atitle{font-size:12px}
-.brow{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:.5px solid var(--border)}
-.brow:last-child{border-bottom:none}
-.bbadge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:var(--bgdec);color:var(--cdec);white-space:nowrap;flex-shrink:0}
-.bnote{font-size:11px;color:var(--t3);display:block}
+.brow{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border)}
+.brow:last-child{border:none}
+.bbadge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--bgdec);color:var(--cdec);white-space:nowrap;flex-shrink:0}
+.bnote{font-size:11px;color:var(--t3);display:block;margin-top:1px}
+
 /* METRICS */
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:1.5rem}
-.metric{background:var(--surface);border:.5px solid var(--border);border-radius:10px;padding:12px 14px}
-.mlabel{font-size:11px;color:var(--t2);margin-bottom:4px}
-.mval{font-size:22px;font-weight:600}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1.25rem}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.mlabel{font-size:11px;color:var(--t2);margin-bottom:5px;font-weight:500}
+.mval{font-size:24px;font-weight:600;letter-spacing:-.02em;font-family:var(--mono)}
+
 /* NAV */
-nav{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.75rem;flex-wrap:wrap}
-nav button{background:none;border:none;border-bottom:2px solid transparent;padding:9px 14px;font-family:var(--font);font-size:13px;color:var(--t2);cursor:pointer;margin-bottom:-1px;transition:color .15s}
-nav button:hover{color:var(--t)}
-nav button.active{border-bottom-color:var(--t);font-weight:500;color:var(--t)}
-/* COMMON */
+.nav-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:4px;display:flex;gap:2px;margin-bottom:1.25rem;overflow-x:auto;flex-shrink:0}
+.nav-wrap::-webkit-scrollbar{display:none}
+nav button{background:none;border:none;padding:7px 13px;font-family:var(--font);font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;border-radius:7px;white-space:nowrap;transition:all .15s}
+nav button:hover{color:var(--t);background:var(--bg)}
+nav button.active{background:var(--bg);color:var(--t);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+
+/* BADGES */
 .badge{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.sub{font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--t3);margin:8px 0 5px}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.urgente-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;background:#b83010;color:#fff;white-space:nowrap;flex-shrink:0;letter-spacing:.02em}
+
 /* TILES */
-.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.tile{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:16px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px}
 .thead{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.tname{font-size:15px;font-weight:500;flex:1}
-.tpbar{height:3px;background:var(--border);border-radius:2px;margin-bottom:10px}
-.tpfill{height:3px;border-radius:2px}
+.tname{font-size:14px;font-weight:600;letter-spacing:-.01em;flex:1}
+.tpbar{height:3px;background:var(--bg);border-radius:2px;margin-bottom:10px;overflow:hidden}
+.tpfill{height:3px;border-radius:2px;transition:width .5s}
 .tstat{display:flex;justify-content:space-between;margin-bottom:10px}
-.tstat span{font-size:11px;color:var(--t2)}
-.titem{display:flex;align-items:flex-start;gap:7px;font-size:12px;margin-bottom:4px}
-.tmore{font-size:11px;color:var(--t3);margin-top:4px;padding-left:14px}
+.tstat span{font-size:11px;color:var(--t2);font-family:var(--mono)}
+.tsub{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin:8px 0 5px}
+.titem{display:flex;align-items:flex-start;gap:6px;font-size:12px;margin-bottom:4px}
+.tmore{font-size:11px;color:var(--t3);margin-top:4px;padding-left:12px}
+
 /* ROOM DETAIL */
-.rcard{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px}
-.rhead{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.rname{font-size:14px;font-weight:500;flex:1}
-.rpbar{height:3px;background:var(--border);border-radius:2px;width:70px}
-.irow{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:.5px solid var(--border)}
-.irow:last-child{border-bottom:none}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:8px}
+.rhead{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.rname{font-size:14px;font-weight:600;letter-spacing:-.01em;flex:1}
+.rpbar{height:3px;background:var(--bg);border-radius:2px;width:60px;overflow:hidden;flex-shrink:0}
+.sub{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin:8px 0 5px}
+.irow{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)}
+.irow:last-child{border:none}
 .itext{flex:1;min-width:0;font-size:12px}
 .inote{font-size:11px;color:var(--t3);margin-left:4px}
-.iblock{font-size:10px;font-weight:600;color:var(--cdec);background:var(--bgdec);padding:1px 6px;border-radius:10px;white-space:nowrap}
+
 /* ORDINA */
-.oroom{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--t3);margin:16px 0 6px}
-.orow{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:var(--surface);border:.5px solid var(--border);margin-bottom:5px}
+.oroom{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin:16px 0 6px}
+.orow{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);margin-bottom:4px}
 .oname{flex:1;font-size:13px}
+
 /* TIMELINE */
-.tlcath{display:flex;align-items:center;gap:7px;margin:14px 0 5px;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--t2)}
-.tlrow{display:flex;align-items:flex-start;margin-bottom:3px}
+.tl-outer{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.tl-scroll-bar-wrap{height:3px;background:var(--bg);margin:0 0 2px}
+.tl-scroll-bar-fill{height:3px;background:var(--t);border-radius:0;width:0%;transition:width .1s}
+.tl-container{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:1rem 1rem 1rem}
+.tl-container::-webkit-scrollbar{height:0}
+.tlcath{display:flex;align-items:center;gap:7px;margin:12px 0 4px;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2)}
+.tlrow{display:flex;align-items:flex-start;margin-bottom:2px}
 .tllbl{text-align:right;padding-right:10px;padding-top:4px;font-size:11px;color:var(--t2);line-height:1.3;flex-shrink:0}
-.tltrack{flex:1;position:relative}
-.tlbar{position:absolute;top:3px;height:20px;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:500;white-space:nowrap;overflow:hidden}
+.tltrack{position:relative;flex-shrink:0}
+.tlbar{position:absolute;top:3px;height:20px;border-radius:5px;display:flex;align-items:center;padding:0 7px;font-family:var(--mono);font-size:10px;font-weight:500;white-space:nowrap;overflow:hidden}
 .tlnote{position:absolute;top:27px;font-size:10px;color:var(--t3);white-space:nowrap}
-.tlgrid{position:absolute;top:0;bottom:0;width:.5px;background:var(--border)}
-.tltoday{position:absolute;top:0;bottom:0;width:2px;background:#c44a2a;opacity:.5}
-.tlwrow{display:flex;margin-bottom:4px}
+.tlgrid{position:absolute;top:0;bottom:0;width:1px;background:var(--border)}
+.tltoday{position:absolute;top:0;bottom:0;width:2px;background:var(--cdec);opacity:.6}
+.tlwrow{display:flex;margin-bottom:4px;flex-shrink:0}
+
 /* LISTA */
 .lfilters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
-.lfilters select{font-family:var(--font);font-size:12px;padding:6px 10px;border:.5px solid var(--bmed);border-radius:8px;background:var(--surface);color:var(--t);cursor:pointer}
-.lrow{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:7px}
+.lfilters select{font-family:var(--font);font-size:12px;padding:6px 10px;border:1px solid var(--border2);border-radius:8px;background:var(--surface);color:var(--t);cursor:pointer;outline:none}
+.lrow{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px}
 .lrow:nth-child(odd){background:var(--surface)}
-.larea{font-size:11px;color:var(--t3);white-space:nowrap}
+.larea{font-size:11px;color:var(--t3);white-space:nowrap;font-family:var(--mono)}
+
 /* LOG */
-.logentry{display:flex;gap:14px;padding:10px 0;border-bottom:.5px solid var(--border);align-items:flex-start}
-.logentry:last-child{border-bottom:none}
-.logdate{font-size:11px;font-weight:600;color:var(--t2);min-width:85px;padding-top:1px}
+.logentry{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.logentry:last-child{border:none}
+.logdate{font-family:var(--mono);font-size:11px;color:var(--t3);min-width:90px;padding-top:1px}
 .logtext{font-size:13px}
 .logform{margin-top:1.25rem;display:flex;gap:8px;flex-wrap:wrap}
-.logform input{flex:1;min-width:200px;font-family:var(--font);font-size:13px;padding:8px 12px;border:.5px solid var(--bmed);border-radius:8px;background:var(--surface);color:var(--t)}
-.logform button{font-family:var(--font);font-size:13px;padding:8px 16px;border:none;border-radius:8px;background:var(--t);color:var(--surface);cursor:pointer}
+.logform input{flex:1;min-width:200px;font-family:var(--font);font-size:13px;padding:8px 12px;border:1px solid var(--border2);border-radius:8px;background:var(--surface);color:var(--t);outline:none}
+.logform input:focus{border-color:var(--t)}
+.logform button{font-family:var(--font);font-size:13px;font-weight:500;padding:8px 16px;border:none;border-radius:8px;background:var(--t);color:#fff;cursor:pointer}
+
+@media(max-width:480px){
+  .tgrid{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr 1fr}
+  .stop{min-width:75px}
+}
 </style>
 </head>
 <body>
 
-<div id="auth-overlay" style="position:fixed;inset:0;background:#f7f6f3;display:flex;align-items:center;justify-content:center;z-index:9999">
-  <div style="background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:340px;text-align:center">
-    <div style="font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#a8a8a4;margin-bottom:8px">Accesso riservato</div>
-    <h2 style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px">Casa Mantellate</h2>
-    <p style="font-size:13px;color:#6b6b67;margin-bottom:1.5rem">Inserisci la password per visualizzare il cantiere</p>
-    <input id="pass-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')tryLogin()" style="width:100%;font-family:'Outfit',sans-serif;font-size:14px;padding:10px 14px;border:.5px solid rgba(0,0,0,.2);border-radius:10px;outline:none;margin-bottom:10px;text-align:center;letter-spacing:.1em">
-    <div id="pass-error" style="display:none;font-size:12px;color:#c44a2a;margin-bottom:10px">Password non corretta — riprova</div>
-    <button onclick="tryLogin()" style="width:100%;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;padding:10px;background:#1a1a18;color:#fff;border:none;border-radius:10px;cursor:pointer">Accedi</button>
+<!-- AUTH -->
+<div id="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-eyebrow">Accesso riservato</div>
+    <h2 class="auth-title">Casa Mantellate</h2>
+    <p class="auth-sub">Inserisci la password per visualizzare</p>
+    <input id="pass-input" class="auth-input" type="password" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')tryLogin()">
+    <div id="pass-error" class="auth-error">Password non corretta — riprova</div>
+    <button class="auth-btn" onclick="tryLogin()">Accedi</button>
   </div>
 </div>
 
-<div id="main-app" style="display:none">
+<div id="main-app">
 <div class="app">
 
-<header>
-  <h1>Casa Mantellate</h1>
-  <p>Cantiere in corso · aggiornato <span id="meta-date"></span></p>
-</header>
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>Casa Mantellate</h1>
+    <p>aggiornato <span id="meta-date"></span></p>
+  </div>
+  <div class="hdr-dot" title="Cantiere in corso"></div>
+</div>
 
-<div class="wbox">
-  <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px">
-    <button class="wtab active" onclick="switchWeekTab('appts',this)">Appuntamenti <span id="wcount-appts" class="wcnt"></span></button>
-    <button class="wtab" onclick="switchWeekTab('blocks',this)">Urgenti <span id="wcount-blocks" class="wcnt"></span></button>
+<!-- NEXT STOPS -->
+<div class="stops-wrap">
+  <div class="stops-label">Prossime tappe</div>
+  <div class="stops-scroll"><div class="stops-track" id="next-stops"></div></div>
+</div>
+
+<!-- WEEK BOX -->
+<div class="week-box">
+  <div class="week-tabs">
+    <button class="wtab active" onclick="switchWeekTab('appts',this)">Appuntamenti <span class="wcnt" id="wcount-appts"></span></button>
+    <button class="wtab" onclick="switchWeekTab('blocks',this)">Urgenti <span class="wcnt" id="wcount-blocks"></span></button>
   </div>
   <div id="week-appts"></div>
   <div id="week-blocks" style="display:none"></div>
@@ -159,14 +245,14 @@ nav button.active{border-bottom-color:var(--t);font-weight:500;color:var(--t)}
 
 <div class="metrics" id="metrics"></div>
 
-<nav>
+<div class="nav-wrap"><nav>
   <button class="active" onclick="showTab('tiles',this)">Panoramica</button>
   <button onclick="showTab('stanze',this)">Per stanza</button>
   <button onclick="showTab('timeline',this)">Timeline</button>
   <button onclick="showTab('ordina',this)">Da ordinare</button>
   <button onclick="showTab('lista',this)">Lista voci</button>
   <button onclick="showTab('log',this)">Log</button>
-</nav>
+</nav></div>
 
 <div id="tab-tiles"></div>
 <div id="tab-stanze" style="display:none"></div>
@@ -176,6 +262,8 @@ nav button.active{border-bottom-color:var(--t);font-weight:500;color:var(--t)}
 <div id="tab-log" style="display:none"></div>
 
 </div>
+</div>
+
 <script>
 const DATA={
   meta:{
@@ -187,6 +275,16 @@ const DATA={
       {when:"Dom 18 mag · 08:30",title:"Cobola — ordine zanzariere ×9"},
     ]
   },
+  nextStops:[
+    {date:"2026-05-11",label:"Inizio cantiere"},
+    {date:"2026-05-13",label:"Punto lavori"},
+    {date:"2026-05-18",label:"Cobola zanzariere"},
+    {date:"2026-05-25",label:"Fine piastrellature"},
+    {date:"2026-05-31",label:"Parquet"},
+    {date:"2026-06-07",label:"Tinteggiatura"},
+    {date:"2026-06-15",label:"Mobili bagno"},
+    {date:"2026-06-26",label:"Installazione mobili"},
+  ],
   log:[
     {date:"10 mag 2026",text:"Riscaldatore WARM WALL PRO acquistato"},
     {date:"10 mag 2026",text:"CSV acquisti aggiornato — stati rivisti per tutte le stanze"},
@@ -196,27 +294,27 @@ const DATA={
     {id:"cucina",name:"Cucina",priority:"essenziale",
      lavori:["Rivestimento 3 lastre pavimento (impresa)","Installazione cucina su misura (fine giugno)"],
      items:[
-      {n:"Cucina su misura",s:"in-corso",blockBy:"ordine urgente",blockNote:"Confermare ordine con il fornitore"},
-      {n:"Cappa Falmec Elle",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici cucina"},
-      {n:"Frigo Bosch KIR81ADD0",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici cucina"},
-      {n:"Forno Bosch HBG7742B1",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici cucina"},
-      {n:"Microonde Bosch CEG732XB1",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici cucina"},
-      {n:"Lavastoviglie Bosch SMV8YCX02E",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici cucina"},
-      {n:"Piano cottura Bosch PXV901DV1E",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici cucina"},
+      {n:"Cucina su misura",s:"in-corso",blockBy:"ordine urgente",blockNote:"Confermare ordine"},
+      {n:"Cappa Falmec Elle",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici"},
+      {n:"Frigo Bosch KIR81ADD0",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici"},
+      {n:"Forno Bosch HBG7742B1",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici"},
+      {n:"Microonde Bosch CEG732XB1",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici"},
+      {n:"Lavastoviglie Bosch SMV8YCX02E",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici"},
+      {n:"Piano cottura Bosch PXV901DV1E",s:"scelto",blockBy:"ordine urgente",blockNote:"Ordine elettrodomestici"},
       {n:"Impianto depurazione PierH2O",s:"scelto"},
       {n:"Rubinetto miscelatore multifunzione",s:"scelto"},
       {n:"Boiserie ORAC PX103 ×6",s:"scelto"},
       {n:"Luci faretti sopra tavolo",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Luci faretti tra isola e cucina",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
-      {n:"Televisione",s:"da-scegliere"},
+      {n:"Televisione 43\"",s:"da-scegliere"},
       {n:"Tavolo + sedie",s:"da-scegliere"},
     ]},
     {id:"bagno-g",name:"Bagno giorno",priority:"essenziale",
      lavori:["Rivestimento doccia (impresa, in corso)","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
      items:[
       {n:"Tappezzeria — ordine MES Ceramiche",s:"da-scegliere",blockBy:"ordine urgente",blockNote:"Coordinare con tinteggiatura"},
-      {n:"Sanitari",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma con MES Ceramiche"},
-      {n:"Mobile bagno",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma con MES Ceramiche"},
+      {n:"Sanitari",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma MES Ceramiche"},
+      {n:"Mobile bagno",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma MES Ceramiche"},
       {n:"Luci pendenti",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Mobile disimpegno",s:"da-scegliere"},
       {n:"Accessori (scopino, rotolo, doccino)",s:"da-scegliere"},
@@ -224,8 +322,8 @@ const DATA={
     {id:"bagno-n",name:"Bagno notte",priority:"essenziale",
      lavori:["Rivestimento (impresa, in corso)","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
      items:[
-      {n:"Sanitari",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma con MES Ceramiche"},
-      {n:"Mobile bagno",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma con MES Ceramiche"},
+      {n:"Sanitari",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma MES Ceramiche"},
+      {n:"Mobile bagno",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma MES Ceramiche"},
       {n:"Soffione doccia",s:"acquistato"},
       {n:"Accessori (scopino, rotolo, doccino)",s:"da-scegliere"},
     ]},
@@ -255,15 +353,15 @@ const DATA={
      lavori:["Rivestimento pareti (impresa, in corso)","Installazione scaldatore + ventola (dopo tinte)"],
      items:[
       {n:"Riscaldatore WARM WALL PRO",s:"acquistato"},
-      {n:"FoxyDry FOLD 80cm (a 107cm)",s:"scelto"},
-      {n:"FoxyDry FOLD 60cm (a 165cm)",s:"scelto"},
+      {n:"FoxyDry FOLD 80cm",s:"scelto"},
+      {n:"FoxyDry FOLD 60cm",s:"scelto"},
       {n:"FoxyDry TOWER 88cm",s:"scelto"},
       {n:"Supporto estraibile lavatrice",s:"scelto"},
-      {n:"Mobile lavanderia",s:"da-scegliere",blockBy:"update MES Ceramiche",blockNote:"Chiedere aggiornamento a MES Ceramiche"},
+      {n:"Mobile lavanderia",s:"da-scegliere",blockBy:"update MES Ceramiche",blockNote:"Chiedere aggiornamento"},
       {n:"Plafoniera",s:"da-scegliere"},
     ]},
     {id:"elettrico",name:"Imp. elettrico / domotica",priority:"importante",
-     lavori:["Elettricista 15gg da lun 11 (Shelly, campanello, AP WiFi)","Copriprese dopo tinteggiatura","Installazione luci fine giugno","Antifurto + domotica finale"],
+     lavori:["Elettricista 15gg da lun 11","Copriprese dopo tinteggiatura","Installazione luci fine giugno","Antifurto + domotica finale"],
      items:[
       {n:"Shelly Pro 4PM ×5",s:"acquistato"},
       {n:"Shelly Dimmer Pro 2PM ×3",s:"acquistato"},
@@ -282,7 +380,6 @@ const DATA={
       {n:"Sensore allagamento Zigbee ×2",s:"scelto"},
       {n:"Sensore temp/umidità Zigbee ×2",s:"scelto"},
       {n:"Sensore apertura porta Zigbee",s:"scelto"},
-
     ]},
     {id:"ingresso",name:"Ingresso + corridoio",priority:"importante",
      lavori:["Parquet (incluso)","Tinteggiatura pareti","Installazione applique (fine giugno)"],
@@ -307,8 +404,8 @@ const DATA={
      lavori:["Parquet (incluso)","Tappezzeria parete (durante tinteggiatura)","Boiserie (durante tinteggiatura)"],
      items:[
       {n:"Boiserie ORAC PX103 ×14",s:"scelto"},
-      {n:"Televisione",s:"da-scegliere"},
-      {n:"Surround 5+1",s:"da-scegliere",blockBy:"valutare installazione",blockNote:"Verificare prima dell'installazione mobili"},
+      {n:"Televisione 65\"",s:"da-scegliere"},
+      {n:"Surround 5+1",s:"da-scegliere",blockBy:"valutare installazione",blockNote:"Prima dei mobili"},
       {n:"Divano",s:"da-scegliere"},
       {n:"Tavolo + sedie",s:"da-scegliere"},
       {n:"Applique sala",s:"da-scegliere"},
@@ -319,30 +416,30 @@ const DATA={
     {id:"generale",name:"Generale / tutta casa",priority:"procrastinabile",
      lavori:["Zanzariere Cobola ×9 (metà giugno)"],
      items:[
-      {n:"Zanzariere Cobola ×9",s:"scelto",note:"Appuntamento 18 mag",blockBy:"entro 18 mag",blockNote:"Appuntamento Cobola ore 8:30"},
+      {n:"Zanzariere Cobola ×9",s:"scelto",note:"Appuntamento 18 mag",blockBy:"entro 18 mag",blockNote:"Appuntamento Cobola 8:30"},
       {n:"Tende di tutta casa",s:"da-scegliere"},
     ]},
   ],
   timeline:{
     totalDays:62,
     categories:[
-      {label:"Elettricista",color:"#7F77DD",textColor:"#26215C",phases:[
-        {label:"Domotica base (Shelly, campanello, AP WiFi, griglie)",s:0,d:15,note:"15gg da lun 11"},
-        {label:"Copriprese",s:35,d:2,note:"5gg dopo tinteggiatura"},
+      {label:"Elettricista",color:"#7c6af7",textColor:"#fff",phases:[
+        {label:"Domotica base (Shelly, campanello, AP WiFi)",s:0,d:15,note:"15gg da lun 11"},
+        {label:"Copriprese",s:35,d:2,note:"Dopo tinteggiatura"},
         {label:"Installazione luci (applique, faretti, LED)",s:46,d:3,note:"Con i mobili"},
         {label:"Antifurto + domotica finale",s:49,d:3,note:"Dopo luci"},
       ]},
-      {label:"Pavimenti",color:"#EF9F27",textColor:"#412402",phases:[
-        {label:"Piastrellature + rivestimenti",s:0,d:14,note:"Bagno notte, lavanderia, doccia bagno giorno, 3 lastre cucina"},
+      {label:"Pavimenti",color:"#f59e0b",textColor:"#fff",phases:[
+        {label:"Piastrellature + rivestimenti",s:0,d:14,note:"Bagno notte, lavanderia, doccia, 3 lastre cucina"},
         {label:"Attesa 2gg",s:14,d:2,dim:true},
         {label:"Posa parquet",s:16,d:4,note:"Tutta casa esclusi bagni, cucina, ripostiglio"},
         {label:"Sosta asciugatura",s:20,d:3,dim:true},
         {label:"Battiscopa",s:30,d:2,note:"Dopo tinteggiatura"},
       ]},
-      {label:"Tinteggiatura / pareti",color:"#378ADD",textColor:"#042C53",phases:[
+      {label:"Tinteggiatura / pareti",color:"#3b82f6",textColor:"#fff",phases:[
         {label:"Tinteggiatura + tappezzerie + boiserie",s:23,d:7,note:"Tappezzerie camera + bagno giorno · boiserie cucina + soggiorno"},
       ]},
-      {label:"Installazioni",color:"#639922",textColor:"#173404",phases:[
+      {label:"Installazioni",color:"#22c55e",textColor:"#fff",phases:[
         {label:"Sanitari + docce",s:20,d:5,note:"Dopo parquet"},
         {label:"Porte normali",s:30,d:4,note:"Dopo tinteggiatura"},
         {label:"Scaldatore + ventola lavanderia",s:32,d:3,note:"WARM WALL + ventola rack"},
@@ -351,31 +448,32 @@ const DATA={
         {label:"Zanzariere Cobola ×9",s:35,d:4,note:"Da metà giugno"},
         {label:"Scala retrattile sottotetto",s:40,d:2,note:"~20 giugno"},
       ]},
-      {label:"Mobili + arredi",color:"#1D9E75",textColor:"#04342C",phases:[
+      {label:"Mobili + arredi",color:"#10b981",textColor:"#fff",phases:[
         {label:"Installazione mobili",s:46,d:6,note:"Ultima settimana giugno"},
       ]},
     ]
   }
 };
 
+/* ── CONFIG ── */
 const SC={
-  acquistato:    {label:"Acquistato",   c:"var(--cacq)", bg:"var(--bgacq)"},
-  ordinato:      {label:"Ordinato",     c:"var(--cord)", bg:"var(--bgord)"},
-  scelto:        {label:"Scelto",       c:"var(--csel)", bg:"var(--bgsel)"},
-  "in-corso":    {label:"In corso",     c:"var(--ccor)", bg:"var(--bgcor)"},
-  "da-decidere": {label:"Da decidere",  c:"var(--cdec)", bg:"var(--bgdec)"},
-  "da-scegliere":{label:"Da scegliere", c:"var(--cdsc)", bg:"var(--bgdsc)"},
+  acquistato:    {label:"Acquistato",  c:"var(--cacq)",bg:"var(--bgacq)"},
+  ordinato:      {label:"Ordinato",    c:"var(--cord)",bg:"var(--bgord)"},
+  scelto:        {label:"Scelto",      c:"var(--csel)",bg:"var(--bgsel)"},
+  "in-corso":    {label:"In corso",    c:"var(--ccor)",bg:"var(--bgcor)"},
+  "da-decidere": {label:"Da decidere", c:"var(--cdec)",bg:"var(--bgdec)"},
+  "da-scegliere":{label:"Da scegliere",c:"var(--cdsc)",bg:"var(--bgdsc)"},
 };
 const PC={
   essenziale:{label:"Essenziale",c:"var(--cess)",bg:"var(--bgess)"},
-  importante:{label:"Importante",c:"var(--cimp)",bg:"var(--bgimp)"},
+  importante:{label:"Importante", c:"var(--cimp)",bg:"var(--bgimp)"},
 };
 const PRIO=["essenziale","importante","procrastinabile"];
 
 function badge(l,c,bg){return `<span class="badge" style="color:${c};background:${bg}">${l}</span>`;}
 function sBadge(s){const c=SC[s]||SC["da-scegliere"];return badge(c.label,c.c,c.bg);}
 function pBadge(p){const c=PC[p];return c?badge(c.label,c.c,c.bg):"";}
-function sDot(s,mt){const c=SC[s]||SC["da-scegliere"];return `<span class="dot" style="background:${c.c};margin-top:${mt==null?5:mt}px"></span>`;}
+function sDot(s,mt){const c=SC[s]||SC["da-scegliere"];return `<span class="dot" style="background:${c.c};margin-top:${mt==null?4:mt}px"></span>`;}
 function prog(r){
   const tot=r.items.length;
   const done=r.items.filter(i=>["acquistato","ordinato"].includes(i.s)).length;
@@ -383,11 +481,39 @@ function prog(r){
   return{tot,done,adv,pct:Math.round((done+adv*.5)/tot*100)};
 }
 
+/* ── NEXT STOPS ── */
+function renderNextStops(){
+  const now=new Date();
+  const stops=DATA.nextStops;
+  let html="";
+  stops.forEach((stop,i)=>{
+    const d=new Date(stop.date);
+    const isPast=d<now && !(d.toDateString()===now.toDateString());
+    const isToday=d.toDateString()===now.toDateString();
+    const isNext=!isPast&&!isToday&&(i===stops.findIndex(s=>new Date(s.date)>=now));
+    const dotClass=isPast?"done":isToday?"today":isNext?"next":"";
+    const lineColor=isPast?"var(--t)":"var(--border)";
+    const mo=["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];
+    const dd=d.getDate();
+    const mm=mo[d.getMonth()];
+    const icon=isPast?"✓":isToday?"●":"";
+    html+=`<div class="stop">
+      <div class="stop-line" style="background:${lineColor}"></div>
+      <div class="stop-dot ${dotClass}">${icon}</div>
+      <div class="stop-meta">
+        <div class="stop-date">${dd} ${mm}</div>
+        <div class="stop-name">${stop.label}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById("next-stops").innerHTML=html;
+}
+
+/* ── WEEK ── */
 function parseApptDate(when){
   const mo={gen:0,feb:1,mar:2,apr:3,mag:4,giu:5,lug:6,ago:7,set:8,ott:9,nov:10,dic:11};
-  const p=when.split(' ');
-  const time=(p[4]||"00:00").split(':');
-  return new Date(2026,mo[p[2]],parseInt(p[1]),parseInt(time[0]),parseInt(time[1]));
+  const p=when.split(' ');const t=(p[4]||"0:0").split(':');
+  return new Date(2026,mo[p[2]],parseInt(p[1]),parseInt(t[0]),parseInt(t[1]));
 }
 function switchWeekTab(id,btn){
   document.getElementById("week-appts").style.display=id==="appts"?"block":"none";
@@ -410,6 +536,7 @@ function renderWeek(){
     :`<div style="font-size:12px;color:var(--t3);padding:6px 0">Nessuna urgenza</div>`;
 }
 
+/* ── METRICS ── */
 function renderMetrics(){
   const all=DATA.rooms.flatMap(r=>r.items);
   const acq=all.filter(i=>["acquistato","ordinato"].includes(i.s)).length;
@@ -417,42 +544,38 @@ function renderMetrics(){
   const essOk=ess.filter(i=>["acquistato","ordinato","scelto","in-corso"].includes(i.s)).length;
   const toOrd=all.filter(i=>i.s==="scelto").length;
   const urgent=all.filter(i=>i.blockBy).length;
-  [
-    {label:"Acquistati/ordinati",val:acq,c:"#2d6a2d"},
-    {label:"Essenziali avanzate",val:`${essOk}/${ess.length}`,c:"#b35a1a"},
-    {label:"Da ordinare ora",val:toOrd,c:"#1a5296"},
-    {label:"Decisioni urgenti",val:urgent,c:"#c44a2a"},
-  ].forEach((m,i)=>document.getElementById("metrics").children[i] && (
-    document.getElementById("metrics").children[i].innerHTML=`<div class="mlabel">${m.label}</div><div class="mval" style="color:${m.c}">${m.val}</div>`
-  ));
   document.getElementById("metrics").innerHTML=[
-    {label:"Acquistati/ordinati",val:acq,c:"#2d6a2d"},
-    {label:"Essenziali avanzate",val:`${essOk}/${ess.length}`,c:"#b35a1a"},
-    {label:"Da ordinare ora",val:toOrd,c:"#1a5296"},
-    {label:"Decisioni urgenti",val:urgent,c:"#c44a2a"},
+    {label:"Acquistati/ordinati",val:acq,c:"#1e6b1e"},
+    {label:"Essenziali ok",val:`${essOk}/${ess.length}`,c:"#9a4a0a"},
+    {label:"Da ordinare ora",val:toOrd,c:"#1749a0"},
+    {label:"Urgenti",val:urgent,c:"#b83010"},
   ].map(m=>`<div class="metric"><div class="mlabel">${m.label}</div><div class="mval" style="color:${m.c}">${m.val}</div></div>`).join("");
 }
 
+/* ── TILES ── */
 function renderTiles(){
   const sorted=[...DATA.rooms].sort((a,b)=>PRIO.indexOf(a.priority)-PRIO.indexOf(b.priority));
   let h=`<div class="tgrid">`;
   sorted.forEach(r=>{
     const p=prog(r);
     const pc=PC[r.priority];
-    const bord=pc?{essenziale:"#9b2424",importante:"#7a4a0a"}[r.priority]||"#ccc":"#e0dfd8";
+    const bord={essenziale:"#8b1a1a",importante:"#6b3c00"}[r.priority]||"transparent";
     const done=r.items.filter(i=>["acquistato","ordinato"].includes(i.s));
     const inP=r.items.filter(i=>["scelto","in-corso","da-decidere"].includes(i.s));
     const pend=r.items.filter(i=>i.s==="da-scegliere");
-    const blocking=r.items.filter(i=>i.blockBy);
-    const fill=p.done===p.tot?"#2d6a2d":"#1a5296";
-    h+=`<div class="tile" style="border-top:3px solid ${bord}">
+    const fill=p.done===p.tot?"#1e6b1e":"#1749a0";
+    h+=`<div class="tile" style="border-top:2px solid ${bord}">
       <div class="thead"><span class="tname">${r.name}</span>${pBadge(r.priority)}</div>
       <div class="tpbar"><div class="tpfill" style="width:${p.pct}%;background:${fill}"></div></div>
       <div class="tstat"><span>${done.length} ok · ${inP.length} in corso</span><span>${pend.length} da scegliere</span></div>`;
+    if(r.lavori?.length){
+      h+=`<div class="tsub">Lavori</div>`;
+      r.lavori.slice(0,2).forEach(l=>h+=`<div class="titem"><span class="dot" style="background:#22c55e;margin-top:4px"></span><span style="color:var(--t2)">${l}</span></div>`);
+    }
     if(inP.length||pend.length){
-      h+=`<div class="sub">Acquisti</div>`;
+      h+=`<div class="tsub">Acquisti</div>`;
       [...inP,...pend].forEach(i=>{
-        const tag=i.blockBy?`<span style="font-size:9px;font-weight:600;padding:1px 6px;border-radius:10px;background:#c44a2a;color:#fff;white-space:nowrap;flex-shrink:0">urgente</span>`:"";
+        const tag=i.blockBy?`<span class="urgente-tag">urgente</span>`:"";
         h+=`<div class="titem">${sDot(i.s)}<span style="flex:1">${i.n}</span>${tag}</div>`;
       });
     }
@@ -462,99 +585,116 @@ function renderTiles(){
   document.getElementById("tab-tiles").innerHTML=h;
 }
 
+/* ── STANZE ── */
 function renderStanze(){
   const sorted=[...DATA.rooms].sort((a,b)=>PRIO.indexOf(a.priority)-PRIO.indexOf(b.priority));
   let h="";
   sorted.forEach(r=>{
     const p=prog(r);
-    const fill=p.done===p.tot?"#2d6a2d":"#1a5296";
+    const fill=p.done===p.tot?"#1e6b1e":"#1749a0";
     h+=`<div class="rcard">
-      <div class="rhead"><span class="rname">${r.name}</span>${pBadge(r.priority)}<span style="font-size:11px;color:var(--t2)">${p.done}/${p.tot}</span><div class="rpbar"><div style="height:3px;border-radius:2px;width:${p.pct}%;background:${fill}"></div></div></div>`;
-    if(r.lavori&&r.lavori.length){
+      <div class="rhead"><span class="rname">${r.name}</span>${pBadge(r.priority)}<span style="font-size:11px;color:var(--t2);font-family:var(--mono)">${p.done}/${p.tot}</span><div class="rpbar"><div style="height:3px;border-radius:2px;width:${p.pct}%;background:${fill}"></div></div></div>`;
+    if(r.lavori?.length){
       h+=`<div class="sub">Lavori impresa</div>`;
-      r.lavori.forEach(l=>h+=`<div style="display:flex;align-items:center;gap:7px;padding:3px 0;font-size:12px;color:var(--t2)"><span class="dot" style="background:#639922"></span>${l}</div>`);
+      r.lavori.forEach(l=>h+=`<div style="display:flex;align-items:center;gap:7px;padding:3px 0;font-size:12px;color:var(--t2)"><span class="dot" style="background:#22c55e"></span>${l}</div>`);
     }
     h+=`<div class="sub" style="margin-top:8px">Acquisti / forniture</div>`;
-    r.items.forEach(i=>h+=`<div class="irow">${sDot(i.s)}<span class="itext">${i.n}${i.note?`<span class="inote">${i.note}</span>`:""}</span>${i.blockBy?`<span class="iblock">${i.blockBy}</span>`:""}${sBadge(i.s)}</div>`);
+    r.items.forEach(i=>h+=`<div class="irow">${sDot(i.s)}<span class="itext">${i.n}${i.note?`<span class="inote">${i.note}</span>`:""}</span>${i.blockBy?`<span class="urgente-tag" style="margin-left:auto">urgente</span>`:""} ${sBadge(i.s)}</div>`);
     h+=`</div>`;
   });
   document.getElementById("tab-stanze").innerHTML=h;
 }
 
+/* ── TIMELINE ── */
+function renderTimeline(){
+  const T=DATA.timeline.totalDays,LW=170;
+  const CHART_W=Math.max(700, LW + T*11);
+  const tS=new Date(2026,4,11);
+  function dAt(n){const d=new Date(tS);d.setDate(d.getDate()+n);return `${d.getDate()}/${d.getMonth()+1}`;}
+
+  let inner=`<div style="width:${CHART_W}px">`;
+  inner+=`<div class="tlwrow">`;
+  for(let w=0;w*7<=T;w++) inner+=`<div style="flex:7;min-width:${(7/T*(CHART_W-LW)).toFixed(0)}px;font-size:10px;color:var(--t3);font-family:var(--mono)">${dAt(w*7)}</div>`;
+  inner+=`</div>`;
+
+  DATA.timeline.categories.forEach(cat=>{
+    inner+=`<div class="tlcath" style="margin-left:${LW}px"><span style="width:8px;height:8px;border-radius:2px;background:${cat.color};flex-shrink:0"></span>${cat.label}</div>`;
+    cat.phases.forEach(p=>{
+      const bc=p.dim?"#d4d2cc":cat.color,tc=p.dim?"#888":cat.textColor;
+      const ph=p.note?42:28;
+      const trackW=CHART_W-LW;
+      const grids=Array.from({length:10},(_,w)=>w*7<=T?`<div class="tlgrid" style="left:${(w*7/T*100).toFixed(1)}%"></div>`:"").join("");
+      inner+=`<div class="tlrow"><div class="tllbl" style="width:${LW}px;min-width:${LW}px">${p.label}</div><div class="tltrack" style="width:${trackW}px;height:${ph}px;flex-shrink:0">${grids}<div class="tltoday" style="left:0%"></div><div class="tlbar" style="left:${(p.s/T*100).toFixed(1)}%;width:${(p.d/T*100).toFixed(1)}%;background:${bc};color:${tc}">${p.d}g</div>${p.note?`<div class="tlnote" style="left:${(p.s/T*100).toFixed(1)}%">${p.note}</div>`:""}</div></div>`;
+    });
+  });
+  inner+=`</div>`;
+
+  const legendHtml=`<div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--t2)">${DATA.timeline.categories.map(c=>`<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:${c.color}"></span>${c.label}</span>`).join("")}</div>`;
+
+  document.getElementById("tab-timeline").innerHTML=`
+    <div class="tl-outer">
+      <div class="tl-scroll-bar-wrap"><div class="tl-scroll-bar-fill" id="tl-fill"></div></div>
+      <div class="tl-container" id="tl-scroll">${inner}</div>
+    </div>
+    ${legendHtml}`;
+
+  const sc=document.getElementById("tl-scroll");
+  const fill=document.getElementById("tl-fill");
+  sc.addEventListener("scroll",()=>{
+    const pct=sc.scrollLeft/(sc.scrollWidth-sc.clientWidth)*100;
+    fill.style.width=Math.min(100,pct).toFixed(1)+"%";
+  });
+}
+
+/* ── ORDINA ── */
 function renderOrdina(){
   const byRoom=DATA.rooms.map(r=>({name:r.name,items:r.items.filter(i=>i.s==="scelto")})).filter(r=>r.items.length);
   const tot=byRoom.reduce((s,r)=>s+r.items.length,0);
-  let h=`<p style="font-size:13px;color:var(--t2);margin-bottom:1.25rem">Tutto quello che è già scelto e attende solo di essere ordinato — <strong style="color:var(--t)">${tot} voci</strong>.</p>`;
+  let h=`<p style="font-size:13px;color:var(--t2);margin-bottom:1.25rem">Già scelti, in attesa di essere ordinati — <strong style="color:var(--t);font-family:var(--mono)">${tot}</strong> voci.</p>`;
   byRoom.forEach(r=>{
     h+=`<div class="oroom">${r.name}</div>`;
-    r.items.forEach(i=>h+=`<div class="orow">${sDot("scelto",0)}<span class="oname">${i.n}${i.note?` <span style="font-size:11px;color:var(--t3)">(${i.note})</span>`:""}</span>${i.blockBy?`<span class="iblock">${i.blockBy}</span>`:""}<span class="badge" style="color:var(--csel);background:var(--bgsel)">Scelto</span></div>`);
+    r.items.forEach(i=>h+=`<div class="orow">${sDot("scelto",0)}<span class="oname">${i.n}${i.note?` <span style="font-size:11px;color:var(--t3)">(${i.note})</span>`:""}</span>${i.blockBy?`<span class="urgente-tag">urgente</span>`:""}<span class="badge" style="color:var(--csel);background:var(--bgsel)">Scelto</span></div>`);
   });
   document.getElementById("tab-ordina").innerHTML=h;
 }
 
-function renderTimeline(){
-  const T=DATA.timeline.totalDays,LW=175;
-  const tS=new Date(2026,4,11);
-  function dAt(n){const d=new Date(tS);d.setDate(d.getDate()+n);return `${d.getDate()}/${d.getMonth()+1}`;}
-  let h=`<p style="font-size:12px;color:var(--t2);margin-bottom:.75rem">Avvio: 11 maggio 2026 · Installazione mobili: fine giugno</p>`;
-  h+=`<div class="tlwrow" style="margin-left:${LW}px">`;
-  for(let w=0;w*7<=T;w++) h+=`<div style="flex:7;font-size:10px;color:var(--t3)">${dAt(w*7)}</div>`;
-  h+=`</div>`;
-  DATA.timeline.categories.forEach(cat=>{
-    h+=`<div class="tlcath" style="margin-left:${LW}px"><span style="width:8px;height:8px;border-radius:2px;background:${cat.color};flex-shrink:0"></span>${cat.label}</div>`;
-    cat.phases.forEach(p=>{
-      const bc=p.dim?"#D3D1C7":cat.color,tc=p.dim?"#888":cat.textColor;
-      const ph=p.note?42:28;
-      const grids=Array.from({length:10},(_,w)=>w*7<=T?`<div class="tlgrid" style="left:${(w*7/T*100).toFixed(1)}%"></div>`:"").join("");
-      h+=`<div class="tlrow"><div class="tllbl" style="width:${LW}px;min-width:${LW}px">${p.label}</div><div class="tltrack" style="height:${ph}px">${grids}<div class="tltoday" style="left:0"></div><div class="tlbar" style="left:${(p.s/T*100).toFixed(1)}%;width:${(p.d/T*100).toFixed(1)}%;background:${bc};color:${tc}">${p.d}g</div>${p.note?`<div class="tlnote" style="left:${(p.s/T*100).toFixed(1)}%">${p.note}</div>`:""}</div></div>`;
-    });
-  });
-  h+=`<div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--t2)">`;
-  DATA.timeline.categories.forEach(c=>h+=`<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:${c.color}"></span>${c.label}</span>`);
-  h+=`</div>`;
-  document.getElementById("tab-timeline").innerHTML=h;
-}
-
+/* ── LISTA ── */
 let lf={area:"Tutte",stato:"Tutti"};
 const allItems=DATA.rooms.flatMap(r=>r.items.map(i=>({...i,area:r.name})));
 function renderLista(){
   const areas=["Tutte",...new Set(allItems.map(i=>i.area))];
   const stati=["Tutti",...Object.keys(SC)];
   const filt=allItems.filter(i=>(lf.area==="Tutte"||i.area===lf.area)&&(lf.stato==="Tutti"||i.s===lf.stato));
-  let h=`<div class="lfilters"><select onchange="lf.area=this.value;renderLista()">${areas.map(a=>`<option${a===lf.area?" selected":""}>${a}</option>`).join("")}</select><select onchange="lf.stato=this.value;renderLista()">${stati.map(s=>`<option value="${s}"${s===lf.stato?" selected":""}>${s==="Tutti"?"Tutti gli stati":SC[s]?.label||s}</option>`).join("")}</select><span style="font-size:12px;color:var(--t2)">${filt.length} voci</span></div>`;
-  filt.forEach(i=>h+=`<div class="lrow">${sDot(i.s)}<span style="flex:1;font-size:12px">${i.n}${i.note?` <span style="color:var(--t3);font-size:11px">(${i.note})</span>`:""}</span><span class="larea">${i.area}</span>${i.blockBy?`<span class="iblock">${i.blockBy}</span>`:""}${sBadge(i.s)}</div>`);
+  let h=`<div class="lfilters"><select onchange="lf.area=this.value;renderLista()">${areas.map(a=>`<option${a===lf.area?" selected":""}>${a}</option>`).join("")}</select><select onchange="lf.stato=this.value;renderLista()">${stati.map(s=>`<option value="${s}"${s===lf.stato?" selected":""}>${s==="Tutti"?"Tutti gli stati":SC[s]?.label||s}</option>`).join("")}</select><span style="font-size:12px;color:var(--t2);font-family:var(--mono)">${filt.length} voci</span></div>`;
+  filt.forEach(i=>h+=`<div class="lrow">${sDot(i.s)}<span style="flex:1;font-size:12px">${i.n}${i.note?` <span style="color:var(--t3);font-size:11px">(${i.note})</span>`:""}</span><span class="larea">${i.area}</span>${i.blockBy?`<span class="urgente-tag">urgente</span>`:""} ${sBadge(i.s)}</div>`);
   document.getElementById("tab-lista").innerHTML=h;
 }
 
+/* ── LOG ── */
 function renderLog(){
-  let h=`<div style="margin-bottom:1.25rem">`;
-  [...DATA.log].reverse().forEach(e=>h+=`<div class="logentry"><span class="logdate">${e.date}</span><span class="logtext">${e.text}</span></div>`);
-  h+=`</div><div class="logform"><input id="log-input" type="text" placeholder="Aggiungi un aggiornamento..."><button onclick="addLog()">Aggiungi</button></div><p style="font-size:11px;color:var(--t3);margin-top:8px">Le voci aggiunte qui sono temporanee — per salvarle in modo permanente aggiorna DATA.log con Claude.</p>`;
+  let h=`<div style="margin-bottom:1.25rem">${[...DATA.log].reverse().map(e=>`<div class="logentry"><span class="logdate">${e.date}</span><span class="logtext">${e.text}</span></div>`).join("")}</div>`;
+  h+=`<div class="logform"><input id="log-input" type="text" placeholder="Aggiungi un aggiornamento..."><button onclick="addLog()">Aggiungi</button></div><p style="font-size:11px;color:var(--t3);margin-top:8px">Voci temporanee — per salvarle aggiorna DATA.log con Claude.</p>`;
   document.getElementById("tab-log").innerHTML=h;
 }
 function addLog(){
   const inp=document.getElementById("log-input");
-  if(!inp||!inp.value.trim())return;
+  if(!inp?.value.trim())return;
   const d=new Date();
   DATA.log.push({date:`${d.getDate()} ${["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"][d.getMonth()]} ${d.getFullYear()}`,text:inp.value.trim()});
   renderLog();
 }
 
+/* ── TABS ── */
 function showTab(id,btn){
   ["tiles","stanze","timeline","ordina","lista","log"].forEach(t=>document.getElementById("tab-"+t).style.display=t===id?"block":"none");
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
 }
 
-renderWeek();renderMetrics();renderTiles();renderStanze();renderTimeline();renderOrdina();renderLista();renderLog();
-
-/* ═══ AUTH ═══════════════════════════════════════
-   CAMBIA LA PASSWORD QUI SOTTO
-   ═══════════════════════════════════════════════ */
-const AUTH_PASS = "mantellate2026";
-const AUTH_COOKIE = "cm_auth_v1";
-const AUTH_DAYS = 180;
-
+/* ── AUTH ── */
+const AUTH_PASS="mantellate2026";
+const AUTH_COOKIE="cm_auth_v1";
+const AUTH_DAYS=180;
 function getCookie(n){const v=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return v?v.pop():'';}
 function setCookie(n,v,d){const x=new Date();x.setTime(x.getTime()+d*864e5);document.cookie=`${n}=${v};expires=${x.toUTCString()};path=/`;}
 function tryLogin(){
@@ -563,7 +703,6 @@ function tryLogin(){
     setCookie(AUTH_COOKIE,"ok",AUTH_DAYS);
     document.getElementById("auth-overlay").style.display="none";
     document.getElementById("main-app").style.display="block";
-    document.getElementById("pass-error").style.display="none";
   } else {
     document.getElementById("pass-error").style.display="block";
     document.getElementById("pass-input").value="";
@@ -574,7 +713,17 @@ if(getCookie(AUTH_COOKIE)==="ok"){
   document.getElementById("auth-overlay").style.display="none";
   document.getElementById("main-app").style.display="block";
 }
+
+/* ── INIT ── */
+renderNextStops();
+renderWeek();
+renderMetrics();
+renderTiles();
+renderStanze();
+renderTimeline();
+renderOrdina();
+renderLista();
+renderLog();
 </script>
-</div>
 </body>
 </html>
