@@ -23,7 +23,11 @@
 ║  item.blockNote → spiegazione vincolo                                ║
 ║  room.priority: essenziale|importante|procrastinabile                ║
 ║                                                                      ║
-║  ULTIMO AGGIORNAMENTO: 16 maggio 2026                                ║
+║  ULTIMO AGGIORNAMENTO: 21 maggio 2026 (v2)                           ║
+║                                                                      ║
+║  MANSARDA: nuova area aggiunta. Scala retrattile arriva ~11 giu      ║
+║  (3 sett da 21 mag) · urgenti: luci, spostamento armadio,            ║
+║  piastrellatura.                                                      ║
 ║                                                                      ║
 ║  STATO CANTIERE:                                                     ║
 ║  - Piastrellature in corso: bagno notte finisce gio 15 mag,          ║
@@ -34,13 +38,14 @@
 ║  - Tinteggiatura slittata: inizia giorno 27 (7 giu).                 ║
 ║  - Tutto il downstream shifta ~4gg rispetto alla versione precedente.║
 ║                                                                      ║
-║  DEADLINE URGENTI SETTIMANA 16-24 MAG:                               ║
-║  - Ven 22 mag: ordinare box doccia bagno notte + mobili bagni        ║
+║  ACQUISTATI: WARM WALL PRO (10 mag), LED faretti gesso ×21 (21 mag). ║
+║  ORDINATI: cabina armadio (16 mag), cucina su misura, box doccia     ║
+║    bagno notte (21 mag · lead time 8-9 sett), mobili bagno gio+not,  ║
+║    tappezzerie bagno gio+not (21 mag · lead time 3-4 sett),          ║
+║    zanzariere Cobola ×9 (22 mag · arrivo 4 sett · posa 5 sett).      ║
+║  SCELTI: zanzariere Cobola ×9 → ora ordinato.                        ║
+║  DEADLINE RIMANENTE:                                                  ║
 ║  - Dom 24 mag: ordinare elettrodomestici online                      ║
-║                                                                      ║
-║  ACQUISTATI: WARM WALL PRO (10 mag).                                 ║
-║  ORDINATI: cabina armadio (16 mag), cucina su misura.                ║
-║  SCELTI: zanzariere Cobola ×9 (appuntamento 18 mag).                 ║
 ╚══════════════════════════════════════════════════════════════════════╝
 -->
 <style>
@@ -295,15 +300,9 @@ nav button.active{background:var(--bg);color:var(--t);box-shadow:0 1px 2px rgba(
 <script>
 const DATA={
   meta:{
-    lastUpdate:"16 maggio 2026",
+    lastUpdate:"21 maggio 2026",
     appointments:[
-      {when:"Mar 12 mag · 18:00",title:"Habimat — scala retrattile sottotetto"},
-      {when:"Mer 13 mag · 07:45",title:"Arredatrice — misure cabina armadio"},
-      {when:"Mer 13 mag · 08:15",title:"Punto lavori — elettricista + posatore"},
-      {when:"Lun 18 mag · 08:30",title:"Cobola — ordine zanzariere ×9"},
-      // DEADLINE URGENTE: entro ven 22 mag
-      {when:"Ven 22 mag",title:"⚠ Deadline — ordinare box doccia bagno notte + mobili bagni giorno e notte"},
-      // DEADLINE URGENTE: entro dom 24 mag
+      // Passati rimossi: 12 mag, 13 mag ×2, 18 mag, 22 mag (completato 21 mag)
       {when:"Dom 24 mag",title:"⚠ Deadline — ordinare elettrodomestici online"},
       {when:"Mer 8 lug",title:"Consegna cucina su misura"},
       {when:"Mer 15 lug",title:"Inizio montaggio cucina"},
@@ -313,11 +312,12 @@ const DATA={
     {date:"2026-05-11",label:"Inizio cantiere"},
     {date:"2026-05-13",label:"Punto lavori"},
     {date:"2026-05-18",label:"Cobola zanzariere"},
-    {date:"2026-05-22",label:"Deadline box doccia + mobili bagni"},
+    {date:"2026-05-22",label:"Box doccia + mobili bagni ✓"},
     {date:"2026-05-24",label:"Deadline elettrodomestici"},
     {date:"2026-05-29",label:"Fine piastrellature"},
     {date:"2026-05-31",label:"Parquet"},
     {date:"2026-06-07",label:"Tinteggiatura"},
+    {date:"2026-06-11",label:"Scala mansarda"},
     {date:"2026-06-15",label:"Mobili bagno"},
     {date:"2026-06-26",label:"Installazione mobili"},
     {date:"2026-07-08",label:"Consegna cucina"},
@@ -334,6 +334,18 @@ const DATA={
     {date:"16 mag 2026",text:"Timeline aggiornata: piastrellature finiscono 29 mag (+4gg), tutto il downstream shifta di conseguenza"},
     {date:"16 mag 2026",text:"Aggiunta rasatura muri in timeline (in corso, entro ~22 mag)"},
     {date:"16 mag 2026",text:"Mobili bagno (giorno + notte): rimessi a 'scelto' — non ancora ordinati formalmente"},
+    {date:"21 mag 2026",text:"Box doccia bagno notte → ordinato (lead time 8-9 settimane)"},
+    {date:"21 mag 2026",text:"Mobili bagno giorno e notte → ordinati"},
+    {date:"21 mag 2026",text:"Tappezzerie bagno giorno e bagno notte → ordinate (lead time 3-4 sett)"},
+    {date:"21 mag 2026",text:"LED faretti gesso ×21 (tutta casa, luci a soffitto) → acquistati"},
+    {date:"21 mag 2026",text:"Zanzariere Cobola ×9 → ordinate (arrivo ~4 sett · posa ~5 sett da ordine · timeline aggiornata)"},
+    {date:"21 mag 2026",text:"Boiserie soggiorno: non più ORAC PX103 ma falegnameria Henry Giraudo su misura"},
+    {date:"21 mag 2026",text:"Letto + mobile cameretta rimosso — era un errore, non si fa per ora"},
+    {date:"21 mag 2026",text:"Mobile camera da letto → acquistato"},
+    {date:"21 mag 2026",text:"Freezer (sgabuzzino) rimosso — già presente, non da acquistare"},
+    {date:"21 mag 2026",text:"Letto matrimoniale: nota aggiunta — da ordinare dopo posa tappezzeria"},
+    {date:"21 mag 2026",text:"Mansarda: nuova area aggiunta — scala retrattile arriva ~11 giu (3 sett), urgenti: luci, spostamento armadio, piastrellatura"},
+    {date:"21 mag 2026",text:"Timeline: scala retrattile spostata a giorno 31 (~11 giu) da giorno 44"},
   ],
   rooms:[
     {id:"cucina",name:"Cucina",priority:"essenziale",
@@ -357,9 +369,9 @@ const DATA={
     {id:"bagno-g",name:"Bagno giorno",priority:"essenziale",
      lavori:["Rivestimento doccia (impresa, in corso — piatto doccia arriva ven 22 mag)","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
      items:[
-      {n:"Tappezzeria — ordine MES Ceramiche",s:"da-scegliere",blockBy:"ordine urgente",blockNote:"Coordinare con tinteggiatura"},
+      {n:"Tappezzeria",s:"ordinato",note:"Lead time 3-4 sett · MES Ceramiche"},
       {n:"Sanitari",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma MES Ceramiche"},
-      {n:"Mobile bagno",s:"scelto",blockBy:"entro ven 22 mag",blockNote:"Ordinare MES Ceramiche"},
+      {n:"Mobile bagno",s:"ordinato"},
       {n:"Luci pendenti",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Mobile disimpegno",s:"da-scegliere"},
       {n:"Accessori (scopino, rotolo, doccino)",s:"da-scegliere"},
@@ -367,9 +379,10 @@ const DATA={
     {id:"bagno-n",name:"Bagno notte",priority:"essenziale",
      lavori:["Rivestimento (impresa) — bagno notte finisce gio 15 mag","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
      items:[
-      {n:"Box doccia bagno notte",s:"da-scegliere",blockBy:"entro ven 22 mag",blockNote:"Ordinare prima della fine piastrellature"},
+      {n:"Box doccia bagno notte",s:"ordinato",note:"Lead time 8-9 sett"},
       {n:"Sanitari",s:"ordinato",blockBy:"verifica ordine",blockNote:"Conferma MES Ceramiche"},
-      {n:"Mobile bagno",s:"scelto",blockBy:"entro ven 22 mag",blockNote:"Ordinare MES Ceramiche"},
+      {n:"Mobile bagno",s:"ordinato"},
+      {n:"Tappezzeria",s:"ordinato",note:"Lead time 3-4 sett · MES Ceramiche"},
       {n:"Soffione doccia",s:"acquistato"},
       {n:"Accessori (scopino, rotolo, doccino)",s:"da-scegliere"},
     ]},
@@ -378,8 +391,8 @@ const DATA={
      items:[
       {n:"Luce veletta seduta",s:"acquistato"},
       {n:"Tappezzeria — ordine MES Ceramiche",s:"da-scegliere",blockBy:"ordine urgente",blockNote:"Coordinare con tinteggiatura"},
-      {n:"Letto matrimoniale",s:"da-scegliere",blockBy:"ordine urgente",blockNote:"Lead time consegna"},
-      {n:"Mobile camera da letto",s:"da-scegliere"},
+      {n:"Letto matrimoniale",s:"da-scegliere",note:"Da ordinare dopo posa tappezzeria"},
+      {n:"Mobile camera da letto",s:"acquistato"},
     ]},
     {id:"cabina",name:"Cabina armadio",priority:"essenziale",
      lavori:["Porta vetro doppia (già ordinata)","Installazione cabina (fine giugno)"],
@@ -389,10 +402,9 @@ const DATA={
       {n:"LED COB 24V + profilo alluminio",s:"da-decidere",note:"Luci interne ripiani"},
     ]},
     {id:"sgabuzzino",name:"Sgabuzzino",priority:"essenziale",
-     lavori:["Scala retrattile sottotetto (~20 giu)","Montaggio struttura IVAR"],
+     lavori:["Scala retrattile sottotetto (~11 giu · aggiornato)","Montaggio struttura IVAR"],
      items:[
       {n:"Struttura IVAR (doc. allegato)",s:"scelto"},
-      {n:"Freezer",s:"da-scegliere"},
       {n:"LED COB 24V + profilo + alimentatore",s:"da-decidere",note:"Illuminazione ripiani"},
     ]},
     {id:"lavanderia",name:"Lavanderia",priority:"essenziale",
@@ -409,6 +421,7 @@ const DATA={
     {id:"elettrico",name:"Imp. elettrico / domotica",priority:"importante",
      lavori:["Elettricista 15gg da lun 11","Copriprese dopo tinteggiatura","Installazione luci fine giugno","Antifurto + domotica finale"],
      items:[
+      {n:"LED faretti gesso ×21",s:"acquistato",note:"Luci a soffitto tutta casa"},
       {n:"Shelly Pro 4PM ×5",s:"acquistato"},
       {n:"Shelly Dimmer Pro 2PM ×3",s:"acquistato"},
       {n:"Shelly Pro 3EM ×2",s:"acquistato"},
@@ -444,12 +457,11 @@ const DATA={
      lavori:["Parquet (incluso)","Tinteggiatura pareti"],
      items:[
       {n:"Armadio su misura",s:"da-scegliere"},
-      {n:"Letto + mobile",s:"da-scegliere"},
     ]},
     {id:"soggiorno",name:"Soggiorno",priority:"procrastinabile",
      lavori:["Parquet (incluso)","Tappezzeria parete (durante tinteggiatura)","Boiserie (durante tinteggiatura)"],
      items:[
-      {n:"Boiserie ORAC PX103 ×14",s:"scelto"},
+      {n:"Boiserie su misura ×14 (Henry Giraudo falegnameria)",s:"scelto"},
       {n:"Televisione 65\"",s:"da-scegliere"},
       {n:"Surround 5+1",s:"da-scegliere",blockBy:"valutare installazione",blockNote:"Prima dei mobili"},
       {n:"Divano",s:"da-scegliere"},
@@ -460,16 +472,26 @@ const DATA={
       {n:"Tavolino",s:"da-scegliere"},
     ]},
     {id:"generale",name:"Generale / tutta casa",priority:"procrastinabile",
-     lavori:["Zanzariere Cobola ×9 (metà giugno)"],
+     lavori:["Zanzariere Cobola ×9 (ordinate 22 mag · posa ~fine giugno)"],
      items:[
-      {n:"Zanzariere Cobola ×9",s:"scelto",note:"Appuntamento 18 mag",blockBy:"entro 18 mag",blockNote:"Appuntamento Cobola 8:30"},
+      {n:"Zanzariere Cobola ×9",s:"ordinato",note:"Ordinate 22 mag · arrivo ~4 sett · posa ~5 sett"},
       {n:"Tende di tutta casa",s:"da-scegliere"},
+    ]},
+    {id:"mansarda",name:"Mansarda",priority:"importante",
+     lavori:["Scala retrattile a soffitto — arrivo ~11 giu (3 sett da 21 mag), installazione subito dopo"],
+     items:[
+      {n:"Luci mansarda",s:"da-scegliere",blockBy:"urgente",blockNote:"Decidere prima dell'installazione scala"},
+      {n:"Spostamento armadio",s:"da-scegliere",blockBy:"urgente",blockNote:"Coordinare con arrivo scala"},
+      {n:"Piastrellatura mansarda",s:"da-scegliere",blockBy:"urgente",blockNote:"Pianificare con impresa"},
     ]},
   ],
   timeline:{
     // Giorno 0 = lun 11 mag 2026
-    // Piastrellature: finiscono 29 mag = giorno 18 (+4gg rispetto a versione precedente)
-    // Tutto il downstream shifta ~4gg
+    // Piastrellature: finiscono 29 mag = giorno 18
+    // Scala retrattile: ordine ~21 mag, arrivo ~11 giu = giorno 31
+    // Zanzariere: ordinate ~22 mag, posa ~5 sett dopo = giorno 46 (~26 giu)
+    // Box doccia bagno notte: lead time 8-9 sett da 21 mag = arrivo giorno 56-63 (~6-13 lug)
+    // Mansarda: piastrellatura e luci TBD, scala a giorno 31
     totalDays:80,
     categories:[
       {label:"Elettricista",color:"#7c6af7",textColor:"#fff",phases:[
@@ -487,21 +509,25 @@ const DATA={
       ]},
       {label:"Tinteggiatura / pareti",color:"#3b82f6",textColor:"#fff",phases:[
         {label:"Rasatura muri",s:5,d:8,note:"In corso — entro ~22 mag"},
-        {label:"Tinteggiatura + tappezzerie + boiserie",s:27,d:7,note:"Tappezzerie camera + bagno giorno · boiserie cucina + soggiorno"},
+        {label:"Tinteggiatura + tappezzerie + boiserie",s:27,d:7,note:"Tappezzerie camera + bagni · boiserie cucina + soggiorno"},
       ]},
       {label:"Installazioni",color:"#22c55e",textColor:"#fff",phases:[
-        {label:"Sanitari + docce",s:24,d:5,note:"Dopo parquet"},
+        {label:"Sanitari + docce (escluso box notte)",s:24,d:5,note:"Dopo parquet · box doccia bagno notte arriva a luglio"},
+        {label:"Scala retrattile sottotetto",s:31,d:2,note:"~11 giugno · 3 sett da ordine (21 mag)"},
         {label:"Porte normali",s:34,d:4,note:"Dopo tinteggiatura"},
         {label:"Scaldatore + ventola lavanderia",s:36,d:3,note:"WARM WALL + ventola rack"},
-        {label:"Porte vetro",s:39,d:5,note:"Cucina + cabina armadio"},
         {label:"Mobili bagno",s:39,d:4,note:"Metà giugno"},
-        {label:"Zanzariere Cobola ×9",s:39,d:4,note:"Da metà giugno"},
-        {label:"Scala retrattile sottotetto",s:44,d:2,note:"~20 giugno"},
+        {label:"Porte vetro",s:39,d:5,note:"Cucina + cabina armadio"},
+        {label:"Zanzariere Cobola ×9",s:46,d:3,note:"Fine giugno · 5 sett da ordine (22 mag)"},
+        {label:"Box doccia bagno notte (montaggio)",s:57,d:2,note:"Arrivo ~6-13 lug · lead time 8-9 sett da ordine"},
       ]},
       {label:"Mobili + arredi",color:"#10b981",textColor:"#fff",phases:[
         {label:"Installazione mobili",s:50,d:6,note:"Ultima settimana giugno"},
         {label:"Consegna cucina su misura",s:58,d:1,note:"8 luglio"},
         {label:"Montaggio cucina",s:65,d:7,note:"Dal 15 luglio"},
+      ]},
+      {label:"Mansarda",color:"#a855f7",textColor:"#fff",phases:[
+        {label:"Scala retrattile (installazione)",s:31,d:2,note:"~11 giu · piastrellatura e luci TBD — urgente pianificare"},
       ]},
     ]
   }
@@ -665,7 +691,6 @@ function buildTimelineInner(T, LW, CHART_W){
   inner+=`<div class="tlwrow" style="margin-left:${LW}px">`;
   for(let w=0;w*7<=T;w++) inner+=`<div style="flex:7;min-width:${(7/T*(CHART_W-LW)).toFixed(0)}px;font-size:10px;color:var(--t3);font-family:var(--mono)">${dAt(w*7)}</div>`;
   inner+=`</div>`;
-  // today line offset from day 0
   const tS0=new Date(2026,4,11);
   const nowD=new Date();
   const todayOffset=Math.max(0,(nowD-tS0)/(1000*60*60*24));
