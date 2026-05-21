@@ -23,7 +23,7 @@
 ║  item.blockNote → spiegazione vincolo                                ║
 ║  room.priority: essenziale|importante|procrastinabile                ║
 ║                                                                      ║
-║  ULTIMO AGGIORNAMENTO: 21 maggio 2026 (v2)                           ║
+║  ULTIMO AGGIORNAMENTO: 22 maggio 2026 (v3)                           ║
 ║                                                                      ║
 ║  MANSARDA: nuova area aggiunta. Scala retrattile arriva ~11 giu      ║
 ║  (3 sett da 21 mag) · urgenti: luci, spostamento armadio,            ║
@@ -41,11 +41,13 @@
 ║  ACQUISTATI: WARM WALL PRO (10 mag), LED faretti gesso ×21 (21 mag). ║
 ║  ORDINATI: cabina armadio (16 mag), cucina su misura, box doccia     ║
 ║    bagno notte (21 mag · lead time 8-9 sett), mobili bagno gio+not,  ║
-║    tappezzerie bagno gio+not (21 mag · lead time 3-4 sett),          ║
-║    zanzariere Cobola ×9 (22 mag · arrivo 4 sett · posa 5 sett).      ║
-║  SCELTI: zanzariere Cobola ×9 → ora ordinato.                        ║
-║  DEADLINE RIMANENTE:                                                  ║
-║  - Dom 24 mag: ordinare elettrodomestici online                      ║
+║    tappezzerie bagno gio+not+camera mat (21 mag · lead time 3-4sett),║
+║    zanzariere Cobola ×9 (22 mag · arrivo 4 sett · posa 5 sett),      ║
+║    elettrodomestici ×6 cucina (22 mag · online).                     ║
+║  BOISERIE: tutte Henry Giraudo su misura, tutte ordinate.            ║
+║    Rimossa ORAC PX103 ovunque.                                       ║
+║  PORTE INTERNE: consegna ~23 giu, installazione 24-27 giu.           ║
+║  DEADLINE RIMANENTI: nessuna urgente — tutte evase.                  ║
 ╚══════════════════════════════════════════════════════════════════════╝
 -->
 <style>
@@ -300,10 +302,9 @@ nav button.active{background:var(--bg);color:var(--t);box-shadow:0 1px 2px rgba(
 <script>
 const DATA={
   meta:{
-    lastUpdate:"21 maggio 2026",
+    lastUpdate:"22 maggio 2026",
     appointments:[
-      // Passati rimossi: 12 mag, 13 mag ×2, 18 mag, 22 mag (completato 21 mag)
-      {when:"Dom 24 mag",title:"⚠ Deadline — ordinare elettrodomestici online"},
+      // Passati rimossi: 12 mag, 13 mag ×2, 18 mag, 22 mag, 24 mag (elettrodomestici ordinati il 22)
       {when:"Mer 8 lug",title:"Consegna cucina su misura"},
       {when:"Mer 15 lug",title:"Inizio montaggio cucina"},
     ]
@@ -312,14 +313,14 @@ const DATA={
     {date:"2026-05-11",label:"Inizio cantiere"},
     {date:"2026-05-13",label:"Punto lavori"},
     {date:"2026-05-18",label:"Cobola zanzariere"},
-    {date:"2026-05-22",label:"Box doccia + mobili bagni ✓"},
-    {date:"2026-05-24",label:"Deadline elettrodomestici"},
+    {date:"2026-05-22",label:"Box doccia + mobili bagni + elettrodomestici ✓"},
     {date:"2026-05-29",label:"Fine piastrellature"},
     {date:"2026-05-31",label:"Parquet"},
     {date:"2026-06-07",label:"Tinteggiatura"},
     {date:"2026-06-11",label:"Scala mansarda"},
     {date:"2026-06-15",label:"Mobili bagno"},
-    {date:"2026-06-26",label:"Installazione mobili"},
+    {date:"2026-06-23",label:"Consegna porte interne"},
+    {date:"2026-06-26",label:"Installazione mobili + porte"},
     {date:"2026-07-08",label:"Consegna cucina"},
     {date:"2026-07-15",label:"Montaggio cucina"},
   ],
@@ -346,21 +347,25 @@ const DATA={
     {date:"21 mag 2026",text:"Letto matrimoniale: nota aggiunta — da ordinare dopo posa tappezzeria"},
     {date:"21 mag 2026",text:"Mansarda: nuova area aggiunta — scala retrattile arriva ~11 giu (3 sett), urgenti: luci, spostamento armadio, piastrellatura"},
     {date:"21 mag 2026",text:"Timeline: scala retrattile spostata a giorno 31 (~11 giu) da giorno 44"},
+    {date:"22 mag 2026",text:"Elettrodomestici ×6 ordinati online: Cappa Falmec Elle, Frigo Bosch KIR81ADD0, Forno Bosch HBG7742B1, Microonde Bosch CEG732XB1, Lavastoviglie Siemens SN95EX12CE, Piano cottura Bosch PXV901DV1E"},
+    {date:"22 mag 2026",text:"Tappezzeria camera matrimoniale → ordinata (21 mag · lead time 3-4 sett · MES Ceramiche)"},
+    {date:"22 mag 2026",text:"Boiserie: rimossa ORAC PX103 ×6 da cucina (e ovunque) — tutte Henry Giraudo su misura, tutte ordinate"},
+    {date:"22 mag 2026",text:"Porte interne: consegna ~23 giu (ultima settimana giugno), installazione 24-27 giu — aggiornata timeline"},
   ],
   rooms:[
     {id:"cucina",name:"Cucina",priority:"essenziale",
      lavori:["Rivestimento 3 lastre pavimento (impresa)","Installazione cucina su misura (fine giugno)"],
      items:[
       {n:"Cucina su misura",s:"ordinato",note:"Consegna 8 lug"},
-      {n:"Cappa Falmec Elle",s:"scelto",blockBy:"entro dom 24 mag",blockNote:"Ordine online elettrodomestici"},
-      {n:"Frigo Bosch KIR81ADD0",s:"scelto",blockBy:"entro dom 24 mag",blockNote:"Ordine online elettrodomestici"},
-      {n:"Forno Bosch HBG7742B1",s:"scelto",blockBy:"entro dom 24 mag",blockNote:"Ordine online elettrodomestici"},
-      {n:"Microonde Bosch CEG732XB1",s:"scelto",blockBy:"entro dom 24 mag",blockNote:"Ordine online elettrodomestici"},
-      {n:"Lavastoviglie Siemens SN95EX12CE",s:"scelto",blockBy:"entro dom 24 mag",blockNote:"Ordine online elettrodomestici"},
-      {n:"Piano cottura Bosch PXV901DV1E",s:"scelto",blockBy:"entro dom 24 mag",blockNote:"Ordine online elettrodomestici"},
+      {n:"Cappa Falmec Elle",s:"ordinato",note:"Ordinato 22 mag"},
+      {n:"Frigo Bosch KIR81ADD0",s:"ordinato",note:"Ordinato 22 mag"},
+      {n:"Forno Bosch HBG7742B1",s:"ordinato",note:"Ordinato 22 mag"},
+      {n:"Microonde Bosch CEG732XB1",s:"ordinato",note:"Ordinato 22 mag"},
+      {n:"Lavastoviglie Siemens SN95EX12CE",s:"ordinato",note:"Ordinato 22 mag"},
+      {n:"Piano cottura Bosch PXV901DV1E",s:"ordinato",note:"Ordinato 22 mag"},
       {n:"Impianto depurazione PierH2O",s:"scelto"},
       {n:"Rubinetto miscelatore multifunzione",s:"scelto"},
-      {n:"Boiserie ORAC PX103 ×6",s:"scelto"},
+      {n:"Boiserie su misura (Henry Giraudo falegnameria)",s:"ordinato"},
       {n:"Luci faretti sopra tavolo",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Luci faretti tra isola e cucina",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Televisione 43\"",s:"da-scegliere"},
@@ -390,7 +395,7 @@ const DATA={
      lavori:["Tappezzeria parete (durante tinteggiatura)","Parquet (incluso)"],
      items:[
       {n:"Luce veletta seduta",s:"acquistato"},
-      {n:"Tappezzeria — ordine MES Ceramiche",s:"da-scegliere",blockBy:"ordine urgente",blockNote:"Coordinare con tinteggiatura"},
+      {n:"Tappezzeria — MES Ceramiche",s:"ordinato",note:"Lead time 3-4 sett · MES Ceramiche · 21 mag"},
       {n:"Letto matrimoniale",s:"da-scegliere",note:"Da ordinare dopo posa tappezzeria"},
       {n:"Mobile camera da letto",s:"acquistato"},
     ]},
@@ -461,7 +466,7 @@ const DATA={
     {id:"soggiorno",name:"Soggiorno",priority:"procrastinabile",
      lavori:["Parquet (incluso)","Tappezzeria parete (durante tinteggiatura)","Boiserie (durante tinteggiatura)"],
      items:[
-      {n:"Boiserie su misura ×14 (Henry Giraudo falegnameria)",s:"scelto"},
+      {n:"Boiserie su misura ×14 (Henry Giraudo falegnameria)",s:"ordinato"},
       {n:"Televisione 65\"",s:"da-scegliere"},
       {n:"Surround 5+1",s:"da-scegliere",blockBy:"valutare installazione",blockNote:"Prima dei mobili"},
       {n:"Divano",s:"da-scegliere"},
@@ -491,7 +496,7 @@ const DATA={
     // Scala retrattile: ordine ~21 mag, arrivo ~11 giu = giorno 31
     // Zanzariere: ordinate ~22 mag, posa ~5 sett dopo = giorno 46 (~26 giu)
     // Box doccia bagno notte: lead time 8-9 sett da 21 mag = arrivo giorno 56-63 (~6-13 lug)
-    // Mansarda: piastrellatura e luci TBD, scala a giorno 31
+    // Porte interne: consegna ~23 giu = giorno 43, installazione 24-27 giu = giorni 44-47
     totalDays:80,
     categories:[
       {label:"Elettricista",color:"#7c6af7",textColor:"#fff",phases:[
@@ -514,7 +519,8 @@ const DATA={
       {label:"Installazioni",color:"#22c55e",textColor:"#fff",phases:[
         {label:"Sanitari + docce (escluso box notte)",s:24,d:5,note:"Dopo parquet · box doccia bagno notte arriva a luglio"},
         {label:"Scala retrattile sottotetto",s:31,d:2,note:"~11 giugno · 3 sett da ordine (21 mag)"},
-        {label:"Porte normali",s:34,d:4,note:"Dopo tinteggiatura"},
+        {label:"Consegna porte interne",s:43,d:1,note:"~23 giugno · ultima sett mese"},
+        {label:"Installazione porte interne",s:44,d:4,note:"~24-27 giugno"},
         {label:"Scaldatore + ventola lavanderia",s:36,d:3,note:"WARM WALL + ventola rack"},
         {label:"Mobili bagno",s:39,d:4,note:"Metà giugno"},
         {label:"Porte vetro",s:39,d:5,note:"Cucina + cabina armadio"},
