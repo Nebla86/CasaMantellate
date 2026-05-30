@@ -30,58 +30,52 @@
 ║  Font: Geist (body) + Geist Mono + Instrument Serif (display)        ║
 ║  Per aggiornare i colori: modificare le custom properties in :root   ║
 ║                                                                      ║
-║  ULTIMO AGGIORNAMENTO: 22 maggio 2026 (v4 — Warm Glass)             ║
+║  ULTIMO AGGIORNAMENTO: 30 maggio 2026 (v5)                           ║
 ║                                                                      ║
-║  STATO CANTIERE: vedi v3 per dettagli.                               ║
-║  ACQUISTATI/ORDINATI: elettrodomestici ×6 (22 mag), tappezzeria      ║
-║    camera (21 mag), boiserie Henry Giraudo ovunque (ordinate).       ║
-║  PORTE INTERNE: consegna ~23 giu, installazione 24-27 giu.           ║
-║  DEADLINE RIMANENTI: nessuna urgente — tutte evase.                  ║
+║  STATO CANTIERE:                                                      ║
+║  ACQUISTATI/ORDINATI: elettrodomestici ×6, tappezzeria camera,       ║
+║    boiserie Henry Giraudo ovunque, impianto PierH2O, rubinetto,      ║
+║    mobile disimpegno, letto matrimoniale, mobile lavanderia,         ║
+║    tavolo cucina.                                                     ║
+║  PORTE INTERNE: consegna ~23 giu, installazione 5 lug.               ║
+║  CUCINA: consegna 15 lug, montaggio 22 lug.                          ║
+║  TIMELINE: piastrellature finiscono 3 giu, rasatura 8 giu,           ║
+║    parquet 11 giu, scala mansarda 12 giu, pitture 30 giu,            ║
+║    porte 5 lug, cucina 15+22 lug.                                     ║
 ╚══════════════════════════════════════════════════════════════════════╝
 -->
 <style>
-/* ===================================================
-   CUSTOM PROPERTIES ANIMABILI
-   =================================================== */
 @property --prog-pct {
   syntax: '<percentage>';
   inherits: false;
   initial-value: 0%;
 }
 
-/* ===================================================
-   ROOT — WARM GLASS PALETTE
-   =================================================== */
 :root {
   --font:         'Geist', system-ui, sans-serif;
   --font-display: 'Instrument Serif', Georgia, serif;
   --mono:         'Geist Mono', monospace;
 
-  /* superfici glass */
   --surface:  oklch(100% 0 0 / .62);
   --surface2: oklch(100% 0 0 / .38);
   --border:   oklch(100% 0 0 / .52);
   --border2:  oklch(40% .02 68 / .18);
   --blur:     16px;
 
-  /* testo */
   --t:  oklch(20% .022 58);
   --t2: oklch(44% .018 58);
   --t3: oklch(66% .012 58);
 
-  /* layout */
   --r: 14px;
   --card-shadow:
     0 8px 32px oklch(20% .05 60 / .07),
     0 2px 8px  oklch(20% .05 60 / .05),
     inset 0 1px 0 oklch(100% 0 0 / .55);
 
-  /* accento principale: terracotta caldo */
   --accent:    oklch(50% .19 28);
   --accent-bg: oklch(50% .19 28 / .1);
   --accent-t:  oklch(30% .16 28);
 
-  /* badge stati */
   --cacq: oklch(30% .12 150); --bgacq: oklch(88% .09 150);
   --cord: oklch(27% .10 185); --bgord: oklch(87% .08 185);
   --csel: oklch(26% .14 250); --bgsel: oklch(87% .07 250);
@@ -89,22 +83,15 @@
   --cdec: oklch(28% .14  30); --bgdec: oklch(88% .09  30);
   --cdsc: oklch(40% .006  0); --bgdsc: oklch(87% .008  0);
 
-  /* badge priorità */
   --cess: oklch(30% .15  15); --bgess: oklch(88% .10  15);
   --cimp: oklch(30% .12  50); --bgimp: oklch(88% .08  50);
 
   color-scheme: light;
 }
 
-/* ===================================================
-   RESET
-   =================================================== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { -webkit-text-size-adjust: 100%; }
 
-/* ===================================================
-   BACKGROUND — MESH GRADIENT FISSO
-   =================================================== */
 body {
   font-family: var(--font);
   font-size: 14px;
@@ -120,9 +107,6 @@ body {
   background-attachment: fixed;
 }
 
-/* ===================================================
-   AUTH OVERLAY
-   =================================================== */
 #auth-overlay {
   position: fixed; inset: 0;
   background: oklch(93% .013 72 / .55);
@@ -142,109 +126,35 @@ body {
   width: 100%; max-width: 320px;
   text-align: center;
 }
-.auth-eyebrow {
-  font-size: 10px; font-weight: 500;
-  letter-spacing: .08em; text-transform: uppercase;
-  color: var(--t3); margin-bottom: 10px;
-}
-.auth-title {
-  font-family: var(--font-display);
-  font-size: 24px; font-weight: 400; font-style: italic;
-  letter-spacing: -.01em; margin-bottom: 6px;
-  color: var(--t);
-}
+.auth-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
+.auth-title { font-family: var(--font-display); font-size: 24px; font-weight: 400; font-style: italic; letter-spacing: -.01em; margin-bottom: 6px; color: var(--t); }
 .auth-sub { font-size: 13px; color: var(--t2); margin-bottom: 1.5rem; }
-.auth-input {
-  width: 100%; font-family: var(--mono); font-size: 15px;
-  padding: 10px 14px;
-  border: 1px solid var(--border2);
-  border-radius: 10px; outline: none;
-  text-align: center; letter-spacing: .15em;
-  color: var(--t);
-  background: oklch(100% 0 0 / .55);
-  margin-bottom: 8px;
-  transition: border-color .15s;
-}
+.auth-input { width: 100%; font-family: var(--mono); font-size: 15px; padding: 10px 14px; border: 1px solid var(--border2); border-radius: 10px; outline: none; text-align: center; letter-spacing: .15em; color: var(--t); background: oklch(100% 0 0 / .55); margin-bottom: 8px; transition: border-color .15s; }
 .auth-input:focus { border-color: var(--accent); }
 .auth-error { font-size: 12px; color: var(--accent); margin-bottom: 10px; display: none; }
-.auth-btn {
-  width: 100%; font-family: var(--font); font-size: 13px; font-weight: 500;
-  padding: 10px;
-  background: var(--accent); color: #fff;
-  border: none; border-radius: 10px; cursor: pointer;
-  transition: opacity .15s;
-  box-shadow: 0 2px 12px var(--accent) / .3;
-}
+.auth-btn { width: 100%; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 10px; background: var(--accent); color: #fff; border: none; border-radius: 10px; cursor: pointer; transition: opacity .15s; }
 .auth-btn:hover { opacity: .88; }
 
-/* ===================================================
-   APP SHELL
-   =================================================== */
 #main-app { display: none; }
 .app { max-width: 900px; margin: 0 auto; padding: clamp(1rem,4vw,2rem); }
 
-/* ===================================================
-   HEADER
-   =================================================== */
 .hdr { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; }
-.hdr-left h1 {
-  font-family: var(--font-display);
-  font-size: clamp(22px,5vw,32px);
-  font-weight: 400; font-style: italic;
-  letter-spacing: -.01em; line-height: 1.15;
-  color: var(--t);
-  text-wrap: balance;
-}
+.hdr-left h1 { font-family: var(--font-display); font-size: clamp(22px,5vw,32px); font-weight: 400; font-style: italic; letter-spacing: -.01em; line-height: 1.15; color: var(--t); text-wrap: balance; }
 .hdr-left p { font-size: 11px; color: var(--t3); margin-top: 4px; font-family: var(--mono); }
-.hdr-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: oklch(62% .17 150);
-  margin-top: 8px; flex-shrink: 0;
-  box-shadow: 0 0 0 3px oklch(62% .17 150 / .2);
-  animation: pulse 2.5s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,100% { box-shadow: 0 0 0 3px oklch(62% .17 150 / .2); }
-  50%      { box-shadow: 0 0 0 7px oklch(62% .17 150 / .06); }
-}
+.hdr-dot { width: 8px; height: 8px; border-radius: 50%; background: oklch(62% .17 150); margin-top: 8px; flex-shrink: 0; box-shadow: 0 0 0 3px oklch(62% .17 150 / .2); animation: pulse 2.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 3px oklch(62% .17 150 / .2); } 50% { box-shadow: 0 0 0 7px oklch(62% .17 150 / .06); } }
 
-/* ===================================================
-   NEXT STOPS
-   =================================================== */
-.stops-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.25rem; overflow: hidden;
-}
-.stops-label {
-  font-size: 10px; font-weight: 500;
-  letter-spacing: .07em; text-transform: uppercase;
-  color: var(--t3); margin-bottom: .75rem;
-}
+.stops-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); padding: 1rem 1.25rem; margin-bottom: 1.25rem; overflow: hidden; }
+.stops-label { font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); margin-bottom: .75rem; }
 .stops-scroll { overflow-x: auto; padding-bottom: .5rem; -webkit-overflow-scrolling: touch; }
 .stops-scroll::-webkit-scrollbar { height: 3px; }
 .stops-scroll::-webkit-scrollbar-track { background: transparent; }
 .stops-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-.stops-track {
-  display: flex; align-items: flex-start; gap: 0;
-  min-width: max-content; position: relative; padding-top: 28px;
-}
+.stops-track { display: flex; align-items: flex-start; gap: 0; min-width: max-content; position: relative; padding-top: 28px; }
 .stop { display: flex; flex-direction: column; align-items: center; min-width: 90px; position: relative; }
 .stop-line { position: absolute; top: 10px; left: 50%; right: -50%; height: 2px; z-index: 0; }
 .stop:last-child .stop-line { display: none; }
-.stop-dot {
-  width: 20px; height: 20px; border-radius: 50%;
-  border: 2px solid var(--border2);
-  background: oklch(100% 0 0 / .7);
-  z-index: 1; display: flex; align-items: center; justify-content: center;
-  font-size: 9px; flex-shrink: 0; position: relative;
-  transition: all .3s;
-}
+.stop-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border2); background: oklch(100% 0 0 / .7); z-index: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; position: relative; transition: all .3s; }
 .stop-dot.done  { background: var(--t); border-color: var(--t); color: oklch(93% .013 72); }
 .stop-dot.today { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent) / .15; }
 .stop-dot.next  { background: oklch(100% 0 0 / .7); border-color: var(--csel); color: var(--csel); }
@@ -252,37 +162,14 @@ body {
 .stop-date { font-family: var(--mono); font-size: 9px; color: var(--t3); }
 .stop-name { font-size: 10px; font-weight: 500; color: var(--t2); max-width: 80px; text-align: center; line-height: 1.3; margin-top: 1px; }
 .stop-dot.done+.stop-meta .stop-name { color: var(--t3); }
-.stop-dot.today+.stop-meta .stop-name,
-.stop-dot.today+.stop-meta .stop-date { color: var(--accent); font-weight: 600; }
+.stop-dot.today+.stop-meta .stop-name, .stop-dot.today+.stop-meta .stop-date { color: var(--accent); font-weight: 600; }
 
-/* ===================================================
-   WEEK BOX
-   =================================================== */
-.week-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.25rem;
-}
+.week-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
 .week-tabs { display: flex; gap: 6px; margin-bottom: .875rem; }
-.wtab {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--font); font-size: 12px; font-weight: 500;
-  padding: 5px 12px; border-radius: 20px;
-  border: 1px solid var(--border2);
-  background: none; color: var(--t2); cursor: pointer;
-  transition: all .15s;
-}
+.wtab { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font); font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border2); background: none; color: var(--t2); cursor: pointer; transition: all .15s; }
 .wtab:hover { border-color: var(--accent-t); color: var(--t); }
 .wtab.active { background: var(--accent-bg); color: var(--accent-t); border-color: oklch(50% .19 28 / .3); }
-.wcnt {
-  font-size: 10px; font-weight: 700;
-  padding: 1px 5px; border-radius: 8px;
-}
+.wcnt { font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 8px; }
 .wtab.active .wcnt     { background: oklch(50% .19 28 / .15); color: var(--accent); }
 .wtab:not(.active) .wcnt { background: oklch(88% .09 30); color: oklch(28% .14 30); }
 .arow { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border2); }
@@ -291,101 +178,30 @@ body {
 .atitle { font-size: 12px; color: var(--t); }
 .brow { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border2); }
 .brow:last-child { border: none; }
-.bbadge {
-  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px;
-  background: oklch(88% .09 30); color: oklch(28% .14 30);
-  white-space: nowrap; flex-shrink: 0;
-}
+.bbadge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: oklch(88% .09 30); color: oklch(28% .14 30); white-space: nowrap; flex-shrink: 0; }
 .bnote { font-size: 11px; color: var(--t3); display: block; margin-top: 1px; }
 
-/* ===================================================
-   METRICS
-   =================================================== */
 .metrics { display: grid; grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); gap: 8px; margin-bottom: 1.25rem; }
-.metric {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  padding: 14px 16px;
-  transition: border-color .2s;
-}
+.metric { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); padding: 14px 16px; transition: border-color .2s; }
 .metric:hover { border-color: oklch(100% 0 0 / .72); }
 .mlabel { font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--t3); margin-bottom: 6px; }
 .mval   { font-size: 24px; font-weight: 500; letter-spacing: -.02em; font-family: var(--mono); }
 
-/* ===================================================
-   NAV
-   =================================================== */
-.nav-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  padding: 4px; display: flex; gap: 2px;
-  margin-bottom: 1.25rem; overflow-x: auto; flex-shrink: 0;
-}
+.nav-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); padding: 4px; display: flex; gap: 2px; margin-bottom: 1.25rem; overflow-x: auto; flex-shrink: 0; }
 .nav-wrap::-webkit-scrollbar { display: none; }
-nav button {
-  background: none; border: none;
-  padding: 7px 13px;
-  font-family: var(--font); font-size: 12px; font-weight: 500;
-  color: var(--t2); cursor: pointer; border-radius: 10px;
-  white-space: nowrap; transition: all .15s;
-}
+nav button { background: none; border: none; padding: 7px 13px; font-family: var(--font); font-size: 12px; font-weight: 500; color: var(--t2); cursor: pointer; border-radius: 10px; white-space: nowrap; transition: all .15s; }
 nav button:hover { color: var(--t); background: var(--surface2); }
-nav button.active {
-  background: var(--accent-bg);
-  color: var(--accent-t);
-  border: 1px solid oklch(50% .19 28 / .25);
-}
+nav button.active { background: var(--accent-bg); color: var(--accent-t); border: 1px solid oklch(50% .19 28 / .25); }
 
-/* ===================================================
-   BADGE + DOT
-   =================================================== */
-.badge {
-  display: inline-flex; align-items: center;
-  font-size: 10px; font-weight: 600;
-  padding: 2px 8px; border-radius: 20px;
-  white-space: nowrap; letter-spacing: .01em;
-}
+.badge { display: inline-flex; align-items: center; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; white-space: nowrap; letter-spacing: .01em; }
 .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.urgente-tag {
-  font-size: 9px; font-weight: 700;
-  padding: 2px 6px; border-radius: 10px;
-  background: var(--accent); color: #fff;
-  white-space: nowrap; flex-shrink: 0;
-  letter-spacing: .02em;
-}
+.urgente-tag { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 10px; background: var(--accent); color: #fff; white-space: nowrap; flex-shrink: 0; letter-spacing: .02em; }
 
-/* ===================================================
-   PANORAMICA — TILES
-   =================================================== */
 .tgrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(min(100%,260px),1fr)); gap: 10px; }
-.tile {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  padding: 14px;
-  transition: border-color .2s, box-shadow .2s;
-}
-.tile:hover {
-  border-color: oklch(100% 0 0 / .72);
-  box-shadow: 0 12px 40px oklch(20% .05 60 / .1), 0 3px 10px oklch(20% .05 60 / .07), inset 0 1px 0 oklch(100% 0 0 / .65);
-}
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); padding: 14px; transition: border-color .2s, box-shadow .2s; }
+.tile:hover { border-color: oklch(100% 0 0 / .72); box-shadow: 0 12px 40px oklch(20% .05 60 / .1), 0 3px 10px oklch(20% .05 60 / .07), inset 0 1px 0 oklch(100% 0 0 / .65); }
 .thead { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.tname {
-  font-family: var(--font-display);
-  font-size: 14px; font-weight: 400; font-style: italic;
-  letter-spacing: -.005em; flex: 1; color: var(--t);
-}
+.tname { font-family: var(--font-display); font-size: 14px; font-weight: 400; font-style: italic; letter-spacing: -.005em; flex: 1; color: var(--t); }
 .tpbar   { height: 3px; background: oklch(100% 0 0 / .3); border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
 .tpfill  { height: 3px; border-radius: 2px; transition: width .6s cubic-bezier(.16,1,.3,1); }
 .tstat   { display: flex; justify-content: space-between; margin-bottom: 10px; }
@@ -393,26 +209,10 @@ nav button.active {
 .tsub { font-size: 9px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); margin: 8px 0 5px; }
 .titem { display: flex; align-items: flex-start; gap: 6px; font-size: 12px; margin-bottom: 4px; }
 
-/* ===================================================
-   PER STANZA — RCARD
-   =================================================== */
-.rcard {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  padding: 14px 16px; margin-bottom: 8px;
-  transition: border-color .2s;
-}
+.rcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); padding: 14px 16px; margin-bottom: 8px; transition: border-color .2s; }
 .rcard:hover { border-color: oklch(100% 0 0 / .72); }
 .rhead { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-.rname {
-  font-family: var(--font-display);
-  font-size: 15px; font-weight: 400; font-style: italic;
-  letter-spacing: -.005em; flex: 1; color: var(--t);
-}
+.rname { font-family: var(--font-display); font-size: 15px; font-weight: 400; font-style: italic; letter-spacing: -.005em; flex: 1; color: var(--t); }
 .rpbar { height: 3px; background: oklch(100% 0 0 / .3); border-radius: 2px; width: 60px; overflow: hidden; flex-shrink: 0; }
 .sub { font-size: 9px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); margin: 8px 0 5px; }
 .irow { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border2); }
@@ -420,36 +220,12 @@ nav button.active {
 .itext { flex: 1; min-width: 0; font-size: 12px; color: var(--t); }
 .inote { font-size: 11px; color: var(--t3); margin-left: 4px; }
 
-/* ===================================================
-   DA ORDINARE
-   =================================================== */
 .oroom { font-size: 9px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); margin: 16px 0 6px; }
-.orow {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 12px; border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  margin-bottom: 4px;
-  transition: border-color .15s;
-}
+.orow { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); margin-bottom: 4px; transition: border-color .15s; }
 .orow:hover { border-color: oklch(100% 0 0 / .72); }
 .oname { flex: 1; font-size: 13px; color: var(--t); }
 
-/* ===================================================
-   TIMELINE
-   =================================================== */
-.tl-outer {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  overflow: hidden;
-}
+.tl-outer { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); overflow: hidden; }
 .tl-scroll-bar-wrap { height: 3px; background: oklch(100% 0 0 / .25); }
 .tl-scroll-bar-fill { height: 3px; background: var(--accent); border-radius: 0; width: 0%; transition: width .1s; }
 .tl-container { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 1rem; }
@@ -464,7 +240,6 @@ nav button.active {
 .tltoday { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: .5; }
 .tlwrow { display: flex; margin-bottom: 4px; flex-shrink: 0; }
 
-/* timeline fullscreen */
 .tl-fs-overlay { position: fixed; inset: 0; background: oklch(93% .013 72 / .8); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); z-index: 2000; display: flex; flex-direction: column; overflow: hidden; }
 .tl-fs-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border2); flex-shrink: 0; background: var(--surface); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 .tl-fs-title { font-family: var(--font-display); font-size: 16px; font-weight: 400; font-style: italic; letter-spacing: -.01em; color: var(--t); }
@@ -475,59 +250,27 @@ nav button.active {
 .tl-fs-legend { padding: 10px 20px 14px; border-top: 1px solid var(--border2); flex-shrink: 0; background: var(--surface); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px; color: var(--t2); }
 .tl-grab { cursor: grab; user-select: none; -webkit-user-select: none; }
 .tl-grab.grabbing { cursor: grabbing; }
-.tl-fs-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--font); font-size: 11px; font-weight: 500;
-  padding: 5px 12px; border: 1px solid var(--border2); border-radius: 10px;
-  background: var(--surface); color: var(--t2); cursor: pointer;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  transition: all .15s; margin-bottom: .875rem;
-}
+.tl-fs-btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font); font-size: 11px; font-weight: 500; padding: 5px 12px; border: 1px solid var(--border2); border-radius: 10px; background: var(--surface); color: var(--t2); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all .15s; margin-bottom: .875rem; }
 .tl-fs-btn:hover { border-color: var(--accent); color: var(--accent); }
 .tl-fs-btn svg { flex-shrink: 0; }
 
-/* ===================================================
-   LISTA VOCI
-   =================================================== */
 .lfilters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
-.lfilters select {
-  font-family: var(--font); font-size: 12px; padding: 6px 10px;
-  border: 1px solid var(--border2); border-radius: 8px;
-  background: var(--surface); color: var(--t); cursor: pointer; outline: none;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-}
+.lfilters select { font-family: var(--font); font-size: 12px; padding: 6px 10px; border: 1px solid var(--border2); border-radius: 8px; background: var(--surface); color: var(--t); cursor: pointer; outline: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .lfilters select:focus { border-color: var(--accent); }
 .lrow { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 9px; }
 .lrow:nth-child(odd) { background: oklch(100% 0 0 / .45); }
 .larea { font-size: 11px; color: var(--t3); white-space: nowrap; font-family: var(--mono); }
 
-/* ===================================================
-   LOG
-   =================================================== */
 .logentry { display: flex; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--border2); align-items: flex-start; }
 .logentry:last-child { border: none; }
 .logdate { font-family: var(--mono); font-size: 11px; color: var(--t3); min-width: 90px; padding-top: 1px; }
 .logtext { font-size: 13px; color: var(--t); }
 .logform { margin-top: 1.25rem; display: flex; gap: 8px; flex-wrap: wrap; }
-.logform input {
-  flex: 1; min-width: 200px;
-  font-family: var(--font); font-size: 13px;
-  padding: 8px 12px; border: 1px solid var(--border2); border-radius: 10px;
-  background: oklch(100% 0 0 / .55); color: var(--t); outline: none;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-}
+.logform input { flex: 1; min-width: 200px; font-family: var(--font); font-size: 13px; padding: 8px 12px; border: 1px solid var(--border2); border-radius: 10px; background: oklch(100% 0 0 / .55); color: var(--t); outline: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .logform input:focus { border-color: var(--accent); }
-.logform button {
-  font-family: var(--font); font-size: 13px; font-weight: 500;
-  padding: 8px 16px; border: none; border-radius: 10px;
-  background: var(--accent); color: #fff; cursor: pointer;
-  transition: opacity .15s;
-}
+.logform button { font-family: var(--font); font-size: 13px; font-weight: 500; padding: 8px 16px; border: none; border-radius: 10px; background: var(--accent); color: #fff; cursor: pointer; transition: opacity .15s; }
 .logform button:hover { opacity: .88; }
 
-/* ===================================================
-   RESPONSIVE
-   =================================================== */
 @media (max-width: 480px) {
   .tgrid { grid-template-columns: 1fr; }
   .metrics { grid-template-columns: 1fr 1fr; }
@@ -537,7 +280,6 @@ nav button.active {
 </head>
 <body>
 
-<!-- AUTH -->
 <div id="auth-overlay">
   <div class="auth-card">
     <div class="auth-eyebrow">Accesso riservato</div>
@@ -560,13 +302,11 @@ nav button.active {
   <div class="hdr-dot" title="Cantiere in corso"></div>
 </div>
 
-<!-- NEXT STOPS -->
 <div class="stops-wrap">
   <div class="stops-label">Prossime tappe</div>
   <div class="stops-scroll"><div class="stops-track" id="next-stops"></div></div>
 </div>
 
-<!-- WEEK BOX -->
 <div class="week-box">
   <div class="week-tabs">
     <button class="wtab active" onclick="switchWeekTab('appts',this)">Appuntamenti <span class="wcnt" id="wcount-appts"></span></button>
@@ -600,10 +340,10 @@ nav button.active {
 <script>
 const DATA={
   meta:{
-    lastUpdate:"22 maggio 2026",
+    lastUpdate:"30 maggio 2026",
     appointments:[
-      {when:"Mer 8 lug",title:"Consegna cucina su misura"},
-      {when:"Mer 15 lug",title:"Inizio montaggio cucina"},
+      {when:"Mar 15 lug",title:"Consegna cucina su misura"},
+      {when:"Mer 22 lug",title:"Inizio montaggio cucina"},
     ]
   },
   nextStops:[
@@ -611,76 +351,77 @@ const DATA={
     {date:"2026-05-13",label:"Punto lavori"},
     {date:"2026-05-18",label:"Cobola zanzariere"},
     {date:"2026-05-22",label:"Box doccia + mobili bagni + elettrodomestici ✓"},
-    {date:"2026-05-29",label:"Fine piastrellature"},
-    {date:"2026-05-31",label:"Parquet"},
-    {date:"2026-06-07",label:"Tinteggiatura"},
-    {date:"2026-06-11",label:"Scala mansarda"},
-    {date:"2026-06-15",label:"Mobili bagno"},
+    {date:"2026-06-03",label:"Fine piastrellature"},
+    {date:"2026-06-08",label:"Fine rasatura muri"},
+    {date:"2026-06-11",label:"Parquet"},
+    {date:"2026-06-12",label:"Scala mansarda"},
     {date:"2026-06-23",label:"Consegna porte interne"},
-    {date:"2026-06-26",label:"Installazione mobili + porte"},
-    {date:"2026-07-08",label:"Consegna cucina"},
-    {date:"2026-07-15",label:"Montaggio cucina"},
+    {date:"2026-06-30",label:"Pitture"},
+    {date:"2026-07-05",label:"Installazione porte"},
+    {date:"2026-07-15",label:"Consegna cucina"},
+    {date:"2026-07-22",label:"Montaggio cucina"},
   ],
   log:[
     {date:"10 mag 2026",text:"Riscaldatore WARM WALL PRO acquistato"},
     {date:"10 mag 2026",text:"CSV acquisti aggiornato — stati rivisti per tutte le stanze"},
     {date:"11 mag 2026",text:"Lavastoviglie aggiornata: Siemens SN95EX12CE (era Bosch SMV8YCX02E)"},
-    {date:"11 mag 2026",text:"Timeline: aggiunti consegna cucina (8 lug) e montaggio cucina (dal 15 lug)"},
+    {date:"11 mag 2026",text:"Timeline: aggiunti consegna cucina e montaggio cucina"},
     {date:"16 mag 2026",text:"Cucina su misura → ordinata"},
-    {date:"16 mag 2026",text:"Elettrodomestici: deadline ordine online entro dom 24 mag"},
-    {date:"16 mag 2026",text:"Box doccia bagno notte + mobili bagni: deadline ordine entro ven 22 mag"},
     {date:"16 mag 2026",text:"Timeline aggiornata: piastrellature finiscono 29 mag (+4gg), tutto il downstream shifta di conseguenza"},
-    {date:"16 mag 2026",text:"Aggiunta rasatura muri in timeline (in corso, entro ~22 mag)"},
-    {date:"16 mag 2026",text:"Mobili bagno (giorno + notte): rimessi a 'scelto' — non ancora ordinati formalmente"},
+    {date:"16 mag 2026",text:"Aggiunta rasatura muri in timeline"},
     {date:"21 mag 2026",text:"Box doccia bagno notte → ordinato (lead time 8-9 settimane)"},
     {date:"21 mag 2026",text:"Mobili bagno giorno e notte → ordinati"},
     {date:"21 mag 2026",text:"Tappezzerie bagno giorno e bagno notte → ordinate (lead time 3-4 sett)"},
     {date:"21 mag 2026",text:"LED faretti gesso ×21 (tutta casa, luci a soffitto) → acquistati"},
-    {date:"21 mag 2026",text:"Zanzariere Cobola ×9 → ordinate (arrivo ~4 sett · posa ~5 sett da ordine · timeline aggiornata)"},
+    {date:"21 mag 2026",text:"Zanzariere Cobola ×9 → ordinate (arrivo ~4 sett · posa ~5 sett da ordine)"},
     {date:"21 mag 2026",text:"Boiserie soggiorno: non più ORAC PX103 ma falegnameria Henry Giraudo su misura"},
-    {date:"21 mag 2026",text:"Letto + mobile cameretta rimosso — era un errore, non si fa per ora"},
     {date:"21 mag 2026",text:"Mobile camera da letto → acquistato"},
-    {date:"21 mag 2026",text:"Freezer (sgabuzzino) rimosso — già presente, non da acquistare"},
-    {date:"21 mag 2026",text:"Letto matrimoniale: nota aggiunta — da ordinare dopo posa tappezzeria"},
-    {date:"21 mag 2026",text:"Mansarda: nuova area aggiunta — scala retrattile arriva ~11 giu (3 sett), urgenti: luci, spostamento armadio, piastrellatura"},
-    {date:"21 mag 2026",text:"Timeline: scala retrattile spostata a giorno 31 (~11 giu) da giorno 44"},
+    {date:"21 mag 2026",text:"Mansarda: nuova area aggiunta — scala retrattile arriva ~11 giu"},
     {date:"22 mag 2026",text:"Elettrodomestici ×6 ordinati online: Cappa Falmec Elle, Frigo Bosch KIR81ADD0, Forno Bosch HBG7742B1, Microonde Bosch CEG732XB1, Lavastoviglie Siemens SN95EX12CE, Piano cottura Bosch PXV901DV1E"},
-    {date:"22 mag 2026",text:"Tappezzeria camera matrimoniale → ordinata (21 mag · lead time 3-4 sett · MES Ceramiche)"},
-    {date:"22 mag 2026",text:"Boiserie: rimossa ORAC PX103 ×6 da cucina (e ovunque) — tutte Henry Giraudo su misura, tutte ordinate"},
-    {date:"22 mag 2026",text:"Porte interne: consegna ~23 giu (ultima settimana giugno), installazione 24-27 giu — aggiornata timeline"},
-    {date:"22 mag 2026",text:"Tema grafico aggiornato: Warm Glass — oklch() + backdrop-filter + mesh gradient"},
+    {date:"22 mag 2026",text:"Tappezzeria camera matrimoniale → ordinata (lead time 3-4 sett · MES Ceramiche)"},
+    {date:"22 mag 2026",text:"Boiserie: tutte Henry Giraudo su misura, tutte ordinate"},
+    {date:"22 mag 2026",text:"Porte interne: consegna ~23 giu — aggiornata timeline"},
+    {date:"30 mag 2026",text:"Impianto depurazione PierH2O → acquistato"},
+    {date:"30 mag 2026",text:"Rubinetto miscelatore multifunzione → acquistato"},
+    {date:"30 mag 2026",text:"Mobile disimpegno (bagno giorno) → acquistato"},
+    {date:"30 mag 2026",text:"Letto matrimoniale → acquistato"},
+    {date:"30 mag 2026",text:"Mobile lavanderia → acquistato"},
+    {date:"30 mag 2026",text:"Tavolo cucina → acquistato (sedie non incluse — da scegliere)"},
+    {date:"30 mag 2026",text:"Timeline: piastrellature finiscono 3 giu, rasatura muri 8 giu, parquet inizia 11 giu, scala mansarda 12 giu, pitture 30 giu, installazione porte 5 lug, cucina 15 lug, montaggio cucina 22 lug"},
+    {date:"30 mag 2026",text:"Installazione mobili rimossa dalla timeline — nulla di confermato per ora"},
   ],
   rooms:[
     {id:"cucina",name:"Cucina",priority:"essenziale",
-     lavori:["Rivestimento 3 lastre pavimento (impresa)","Installazione cucina su misura (fine giugno)"],
+     lavori:["Rivestimento 3 lastre pavimento (impresa)","Installazione cucina su misura (dal 22 lug)"],
      items:[
-      {n:"Cucina su misura",s:"ordinato",note:"Consegna 8 lug"},
+      {n:"Cucina su misura",s:"ordinato",note:"Consegna 15 lug"},
       {n:"Cappa Falmec Elle",s:"ordinato",note:"Ordinato 22 mag"},
       {n:"Frigo Bosch KIR81ADD0",s:"ordinato",note:"Ordinato 22 mag"},
       {n:"Forno Bosch HBG7742B1",s:"ordinato",note:"Ordinato 22 mag"},
       {n:"Microonde Bosch CEG732XB1",s:"ordinato",note:"Ordinato 22 mag"},
       {n:"Lavastoviglie Siemens SN95EX12CE",s:"ordinato",note:"Ordinato 22 mag"},
       {n:"Piano cottura Bosch PXV901DV1E",s:"ordinato",note:"Ordinato 22 mag"},
-      {n:"Impianto depurazione PierH2O",s:"scelto"},
-      {n:"Rubinetto miscelatore multifunzione",s:"scelto"},
+      {n:"Impianto depurazione PierH2O",s:"acquistato"},
+      {n:"Rubinetto miscelatore multifunzione",s:"acquistato"},
       {n:"Boiserie su misura (Henry Giraudo falegnameria)",s:"ordinato"},
       {n:"Luci faretti sopra tavolo",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Luci faretti tra isola e cucina",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Televisione 43\"",s:"da-scegliere"},
-      {n:"Tavolo + sedie",s:"da-scegliere"},
+      {n:"Tavolo cucina",s:"acquistato"},
+      {n:"Sedie",s:"da-scegliere"},
     ]},
     {id:"bagno-g",name:"Bagno giorno",priority:"essenziale",
-     lavori:["Rivestimento doccia (impresa, in corso — piatto doccia arriva ven 22 mag)","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
+     lavori:["Rivestimento doccia (impresa, in corso)","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
      items:[
       {n:"Tappezzeria",s:"ordinato",note:"Lead time 3-4 sett · MES Ceramiche"},
       {n:"Sanitari",s:"ordinato",note:"Confermato 18 mag · MES Ceramiche"},
       {n:"Mobile bagno",s:"ordinato"},
+      {n:"Mobile disimpegno",s:"acquistato"},
       {n:"Luci pendenti",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
-      {n:"Mobile disimpegno",s:"da-scegliere"},
       {n:"Accessori (scopino, rotolo, doccino)",s:"da-scegliere"},
     ]},
     {id:"bagno-n",name:"Bagno notte",priority:"essenziale",
-     lavori:["Rivestimento (impresa) — bagno notte finisce gio 15 mag","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
+     lavori:["Rivestimento (impresa)","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
      items:[
       {n:"Box doccia bagno notte",s:"ordinato",note:"Lead time 8-9 sett"},
       {n:"Sanitari",s:"ordinato",note:"Confermato 18 mag · MES Ceramiche"},
@@ -694,7 +435,7 @@ const DATA={
      items:[
       {n:"Luce veletta seduta",s:"acquistato"},
       {n:"Tappezzeria — MES Ceramiche",s:"ordinato",note:"Lead time 3-4 sett · MES Ceramiche · 21 mag"},
-      {n:"Letto matrimoniale",s:"da-scegliere",note:"Da ordinare dopo posa tappezzeria"},
+      {n:"Letto matrimoniale",s:"acquistato"},
       {n:"Mobile camera da letto",s:"acquistato"},
     ]},
     {id:"cabina",name:"Cabina armadio",priority:"essenziale",
@@ -705,7 +446,7 @@ const DATA={
       {n:"LED COB 24V + profilo alluminio",s:"da-decidere",note:"Luci interne ripiani"},
     ]},
     {id:"sgabuzzino",name:"Sgabuzzino",priority:"essenziale",
-     lavori:["Scala retrattile sottotetto (~11 giu · aggiornato)","Montaggio struttura IVAR"],
+     lavori:["Scala retrattile sottotetto (~12 giu)","Montaggio struttura IVAR"],
      items:[
       {n:"Struttura IVAR (doc. allegato)",s:"scelto"},
       {n:"LED COB 24V + profilo + alimentatore",s:"da-decidere",note:"Illuminazione ripiani"},
@@ -718,7 +459,7 @@ const DATA={
       {n:"FoxyDry FOLD 60cm",s:"scelto"},
       {n:"FoxyDry TOWER 88cm",s:"scelto"},
       {n:"Supporto estraibile lavatrice",s:"scelto"},
-      {n:"Mobile lavanderia",s:"da-scegliere",blockBy:"update MES Ceramiche",blockNote:"Chiedere aggiornamento"},
+      {n:"Mobile lavanderia",s:"acquistato"},
       {n:"Plafoniera",s:"da-scegliere"},
     ]},
     {id:"elettrico",name:"Imp. elettrico / domotica",priority:"importante",
@@ -781,7 +522,7 @@ const DATA={
       {n:"Tende di tutta casa",s:"da-scegliere"},
     ]},
     {id:"mansarda",name:"Mansarda",priority:"importante",
-     lavori:["Scala retrattile a soffitto — arrivo ~11 giu (3 sett da 21 mag), installazione subito dopo"],
+     lavori:["Scala retrattile a soffitto — installazione 12 giu"],
      items:[
       {n:"Luci mansarda",s:"da-scegliere",blockBy:"urgente",blockNote:"Decidere prima dell'installazione scala"},
       {n:"Spostamento armadio",s:"da-scegliere",blockBy:"urgente",blockNote:"Coordinare con arrivo scala"},
@@ -789,49 +530,50 @@ const DATA={
     ]},
   ],
   timeline:{
-    totalDays:80,
+    // giorno 0 = 11 maggio 2026
+    // giorno 23 = 3 giu | 28 = 8 giu | 31 = 11 giu | 32 = 12 giu
+    // giorno 43 = 23 giu | 50 = 30 giu | 55 = 5 lug | 65 = 15 lug | 72 = 22 lug
+    totalDays:90,
     categories:[
       {label:"Elettricista",color:"#7c6af7",textColor:"#fff",phases:[
         {label:"Domotica base (Shelly, campanello, AP WiFi)",s:0,d:15,note:"15gg da lun 11"},
-        {label:"Copriprese",s:39,d:2,note:"Dopo tinteggiatura"},
-        {label:"Installazione luci (applique, faretti, LED)",s:50,d:3,note:"Con i mobili"},
-        {label:"Antifurto + domotica finale",s:53,d:3,note:"Dopo luci"},
+        {label:"Copriprese",s:50,d:2,note:"Dopo tinteggiatura"},
+        {label:"Installazione luci (applique, faretti, LED)",s:55,d:3,note:"Con i mobili"},
+        {label:"Antifurto + domotica finale",s:58,d:3,note:"Dopo luci"},
       ]},
       {label:"Pavimenti",color:"#f59e0b",textColor:"#fff",phases:[
-        {label:"Piastrellature + rivestimenti",s:0,d:18,note:"Bagno notte (gio 15), doccia giorno (ven 22), tutto finisce 29 mag"},
-        {label:"Attesa 2gg",s:18,d:2,dim:true},
-        {label:"Posa parquet",s:20,d:4,note:"Tutta casa esclusi bagni, cucina, ripostiglio"},
-        {label:"Sosta asciugatura",s:24,d:3,dim:true},
-        {label:"Battiscopa",s:34,d:2,note:"Dopo tinteggiatura"},
+        {label:"Piastrellature + rivestimenti",s:0,d:23,note:"Fine 3 giu"},
+        {label:"Attesa 2gg",s:23,d:2,dim:true},
+        {label:"Posa parquet",s:31,d:4,note:"Inizia 11 giu"},
+        {label:"Sosta asciugatura",s:35,d:3,dim:true},
+        {label:"Battiscopa",s:50,d:2,note:"Dopo tinteggiatura"},
       ]},
       {label:"Tinteggiatura / pareti",color:"#3b82f6",textColor:"#fff",phases:[
-        {label:"Rasatura muri",s:5,d:8,note:"In corso — entro ~22 mag"},
-        {label:"Tinteggiatura + tappezzerie + boiserie",s:27,d:7,note:"Tappezzerie camera + bagni · boiserie cucina + soggiorno"},
+        {label:"Rasatura muri",s:5,d:28,note:"Fine 8 giu"},
+        {label:"Tinteggiatura + tappezzerie + boiserie",s:38,d:12,note:"Fine 30 giu · tappezzerie camera + bagni · boiserie"},
       ]},
       {label:"Installazioni",color:"#22c55e",textColor:"#fff",phases:[
-        {label:"Sanitari + docce (escluso box notte)",s:24,d:5,note:"Dopo parquet · box doccia bagno notte arriva a luglio"},
-        {label:"Scala retrattile sottotetto",s:31,d:2,note:"~11 giugno · 3 sett da ordine (21 mag)"},
-        {label:"Consegna porte interne",s:43,d:1,note:"~23 giugno · ultima sett mese"},
-        {label:"Installazione porte interne",s:44,d:4,note:"~24-27 giugno"},
-        {label:"Scaldatore + ventola lavanderia",s:36,d:3,note:"WARM WALL + ventola rack"},
-        {label:"Mobili bagno",s:39,d:4,note:"Metà giugno"},
-        {label:"Porte vetro",s:39,d:5,note:"Cucina + cabina armadio"},
+        {label:"Sanitari + docce (escluso box notte)",s:35,d:5,note:"Dopo parquet"},
+        {label:"Scala retrattile sottotetto",s:32,d:2,note:"12 giugno"},
+        {label:"Consegna porte interne",s:43,d:1,note:"~23 giugno"},
+        {label:"Installazione porte interne",s:55,d:4,note:"5 luglio"},
+        {label:"Scaldatore + ventola lavanderia",s:40,d:3,note:"WARM WALL + ventola rack"},
+        {label:"Mobili bagno",s:43,d:4,note:"Metà giugno"},
+        {label:"Porte vetro",s:43,d:5,note:"Cucina + cabina armadio"},
         {label:"Zanzariere Cobola ×9",s:46,d:3,note:"Fine giugno · 5 sett da ordine (22 mag)"},
-        {label:"Box doccia bagno notte (montaggio)",s:57,d:2,note:"Arrivo ~6-13 lug · lead time 8-9 sett da ordine"},
+        {label:"Box doccia bagno notte (montaggio)",s:57,d:2,note:"Arrivo ~6-13 lug · lead time 8-9 sett"},
       ]},
       {label:"Mobili + arredi",color:"#10b981",textColor:"#fff",phases:[
-        {label:"Installazione mobili",s:50,d:6,note:"Ultima settimana giugno"},
-        {label:"Consegna cucina su misura",s:58,d:1,note:"8 luglio"},
-        {label:"Montaggio cucina",s:65,d:7,note:"Dal 15 luglio"},
+        {label:"Consegna cucina su misura",s:65,d:1,note:"15 luglio"},
+        {label:"Montaggio cucina",s:72,d:7,note:"Dal 22 luglio"},
       ]},
       {label:"Mansarda",color:"#a855f7",textColor:"#fff",phases:[
-        {label:"Scala retrattile (installazione)",s:31,d:2,note:"~11 giu · piastrellatura e luci TBD — urgente pianificare"},
+        {label:"Scala retrattile (installazione)",s:32,d:2,note:"12 giu · piastrellatura e luci TBD — urgente pianificare"},
       ]},
     ]
   }
 };
 
-/* ── CONFIG ── */
 const SC={
   acquistato:    {label:"Acquistato",  c:"var(--cacq)",bg:"var(--bgacq)"},
   ordinato:      {label:"Ordinato",    c:"var(--cord)",bg:"var(--bgord)"},
@@ -857,7 +599,6 @@ function prog(r){
   return{tot,done,adv,pct:Math.round((done+adv*.5)/tot*100)};
 }
 
-/* ── NEXT STOPS ── */
 function renderNextStops(){
   const now=new Date();
   const stops=DATA.nextStops;
@@ -884,7 +625,6 @@ function renderNextStops(){
   document.getElementById("next-stops").innerHTML=html;
 }
 
-/* ── WEEK ── */
 function parseApptDate(when){
   const mo={gen:0,feb:1,mar:2,apr:3,mag:4,giu:5,lug:6,ago:7,set:8,ott:9,nov:10,dic:11};
   const p=when.split(' ');const t=(p[4]||"0:0").split(':');
@@ -911,7 +651,6 @@ function renderWeek(){
     :`<div style="font-size:12px;color:var(--t3);padding:6px 0">Nessuna urgenza</div>`;
 }
 
-/* ── METRICS ── */
 function renderMetrics(){
   const all=DATA.rooms.flatMap(r=>r.items);
   const acq=all.filter(i=>["acquistato","ordinato"].includes(i.s)).length;
@@ -927,7 +666,6 @@ function renderMetrics(){
   ].map(m=>`<div class="metric"><div class="mlabel">${m.label}</div><div class="mval" style="color:${m.c}">${m.val}</div></div>`).join("");
 }
 
-/* ── TILES ── */
 function renderTiles(){
   const sorted=[...DATA.rooms].sort((a,b)=>PRIO.indexOf(a.priority)-PRIO.indexOf(b.priority));
   let h=`<div class="tgrid">`;
@@ -959,7 +697,6 @@ function renderTiles(){
   document.getElementById("tab-tiles").innerHTML=h;
 }
 
-/* ── STANZE ── */
 function renderStanze(){
   const sorted=[...DATA.rooms].sort((a,b)=>PRIO.indexOf(a.priority)-PRIO.indexOf(b.priority));
   let h="";
@@ -979,7 +716,6 @@ function renderStanze(){
   document.getElementById("tab-stanze").innerHTML=h;
 }
 
-/* ── TIMELINE ── */
 function buildTimelineInner(T,LW,CHART_W){
   const tS=new Date(2026,4,11);
   function dAt(n){const d=new Date(tS);d.setDate(d.getDate()+n);return `${d.getDate()}/${d.getMonth()+1}`;}
@@ -1062,7 +798,6 @@ function renderTimeline(){
   addDragPan(sc);
 }
 
-/* ── ORDINA ── */
 function renderOrdina(){
   const byRoom=DATA.rooms.map(r=>({name:r.name,items:r.items.filter(i=>i.s==="scelto")})).filter(r=>r.items.length);
   const tot=byRoom.reduce((s,r)=>s+r.items.length,0);
@@ -1074,7 +809,6 @@ function renderOrdina(){
   document.getElementById("tab-ordina").innerHTML=h;
 }
 
-/* ── LISTA ── */
 let lf={area:"Tutte",stato:"Tutti"};
 const allItems=DATA.rooms.flatMap(r=>r.items.map(i=>({...i,area:r.name})));
 function renderLista(){
@@ -1086,7 +820,6 @@ function renderLista(){
   document.getElementById("tab-lista").innerHTML=h;
 }
 
-/* ── LOG ── */
 function renderLog(){
   let h=`<div style="margin-bottom:1.25rem">${[...DATA.log].reverse().map(e=>`<div class="logentry"><span class="logdate">${e.date}</span><span class="logtext">${e.text}</span></div>`).join("")}</div>`;
   h+=`<div class="logform"><input id="log-input" type="text" placeholder="Aggiungi un aggiornamento..."><button onclick="addLog()">Aggiungi</button></div><p style="font-size:11px;color:var(--t3);margin-top:8px">Voci temporanee — per salvarle aggiorna DATA.log con Claude.</p>`;
@@ -1100,14 +833,12 @@ function addLog(){
   renderLog();
 }
 
-/* ── TABS ── */
 function showTab(id,btn){
   ["tiles","stanze","timeline","ordina","lista","log"].forEach(t=>document.getElementById("tab-"+t).style.display=t===id?"block":"none");
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
 }
 
-/* ── AUTH ── */
 const AUTH_PASS="mantellate2026";
 const AUTH_COOKIE="cm_auth_v1";
 const AUTH_DAYS=180;
@@ -1130,7 +861,6 @@ if(getCookie(AUTH_COOKIE)==="ok"){
   document.getElementById("main-app").style.display="block";
 }
 
-/* ── INIT ── */
 renderNextStops();renderWeek();renderMetrics();
 renderTiles();renderStanze();renderTimeline();
 renderOrdina();renderLista();renderLog();
