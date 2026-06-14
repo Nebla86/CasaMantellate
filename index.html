@@ -30,13 +30,14 @@
 ║  Font: Geist (body) + Geist Mono + Instrument Serif (display)        ║
 ║  Per aggiornare i colori: modificare le custom properties in :root   ║
 ║                                                                      ║
-║  ULTIMO AGGIORNAMENTO: 7 giugno 2026 (v6)                            ║
+║  ULTIMO AGGIORNAMENTO: 14 giugno 2026 (v7)                           ║
 ║                                                                      ║
 ║  STATO CANTIERE:                                                      ║
 ║  ACQUISTATI/ORDINATI: elettrodomestici ×6, tappezzeria camera,       ║
 ║    boiserie Henry Giraudo ovunque, impianto PierH2O, rubinetto,      ║
-║    mobile disimpegno, letto matrimoniale, mobile lavanderia,         ║
-║    tavolo cucina.                                                     ║
+║    mobile disimpegno, letto+materasso, mobile lavanderia,            ║
+║    tavolo cucina, tavolo sala, sedie cucina ×6,                      ║
+║    mobile antibagno cabina, lavabi+mobili bagni ×2, specchiere ×2.  ║
 ║  PORTE INTERNE: consegna ~23 giu, installazione 8-10 lug.            ║
 ║  CUCINA: consegna 15 lug, posa 22 lug, posa top cucina 6 ago.        ║
 ║  TIMELINE: piastrellature finiscono 3 giu, elettricista fine 10 giu, ║
@@ -345,7 +346,7 @@ nav button.active { background: var(--accent-bg); color: var(--accent-t); border
 <script>
 const DATA={
   meta:{
-    lastUpdate:"7 giugno 2026",
+    lastUpdate:"14 giugno 2026",
     appointments:[
       {when:"Mar 15 lug",title:"Consegna cucina su misura"},
       {when:"Mer 22 lug",title:"Posa cucina"},
@@ -405,6 +406,16 @@ const DATA={
     {date:"7 giu 2026",text:"Installazione porte interne: spostata all'8-9-10 luglio"},
     {date:"7 giu 2026",text:"Posa cucina confermata il 22 luglio"},
     {date:"7 giu 2026",text:"Posa top cucina: aggiunta al 6 agosto"},
+    {date:"14 giu 2026",text:"Letto e materasso → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Mobile camera da letto → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Tavolo cucina → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Tavolo sala → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Sedie cucina ×6 → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Mobile antibagno cabina armadio → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Lavabo + mobile bagno giorno → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Lavabo + mobile bagno notte → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Specchiera bagno giorno → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Specchiera bagno notte → acquistato (Arredatore)"},
   ],
   rooms:[
     {id:"cucina",name:"Cucina",priority:"essenziale",
@@ -423,8 +434,8 @@ const DATA={
       {n:"Luci faretti sopra tavolo",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Luci faretti tra isola e cucina",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Televisione 43\"",s:"da-scegliere"},
-      {n:"Tavolo cucina",s:"acquistato"},
-      {n:"Sedie",s:"da-scegliere"},
+      {n:"Tavolo cucina",s:"acquistato",note:"Arredatore"},
+      {n:"Sedie cucina ×6",s:"acquistato",note:"Arredatore"},
     ]},
     {id:"bagno-g",name:"Bagno giorno",priority:"essenziale",
      lavori:["Rivestimento doccia (impresa, in corso)","Montaggio sanitari (dopo parquet)","Montaggio mobile (metà giugno)"],
@@ -433,6 +444,8 @@ const DATA={
       {n:"Sanitari",s:"ordinato",note:"Confermato 18 mag · MES Ceramiche"},
       {n:"Mobile bagno",s:"ordinato"},
       {n:"Mobile disimpegno",s:"acquistato"},
+      {n:"Lavabo + mobile",s:"acquistato",note:"Arredatore"},
+      {n:"Specchiera",s:"acquistato",note:"Arredatore"},
       {n:"Luci pendenti",s:"da-scegliere",blockBy:"entro fine mag",blockNote:"Prima che finisca l'elettricista"},
       {n:"Accessori (scopino, rotolo, doccino)",s:"da-scegliere"},
     ]},
@@ -444,6 +457,8 @@ const DATA={
       {n:"Mobile bagno",s:"ordinato"},
       {n:"Tappezzeria",s:"ordinato",note:"Lead time 3-4 sett · MES Ceramiche"},
       {n:"Soffione doccia",s:"acquistato"},
+      {n:"Lavabo + mobile",s:"acquistato",note:"Arredatore"},
+      {n:"Specchiera",s:"acquistato",note:"Arredatore"},
       {n:"Accessori (scopino, rotolo, doccino)",s:"da-scegliere"},
     ]},
     {id:"camera",name:"Camera matrimoniale",priority:"essenziale",
@@ -451,13 +466,14 @@ const DATA={
      items:[
       {n:"Luce veletta seduta",s:"acquistato"},
       {n:"Tappezzeria — MES Ceramiche",s:"ordinato",note:"Lead time 3-4 sett · MES Ceramiche · 21 mag"},
-      {n:"Letto matrimoniale",s:"acquistato"},
-      {n:"Mobile camera da letto",s:"acquistato"},
+      {n:"Letto e materasso",s:"acquistato",note:"Arredatore"},
+      {n:"Mobile camera da letto",s:"acquistato",note:"Arredatore"},
     ]},
     {id:"cabina",name:"Cabina armadio",priority:"essenziale",
      lavori:["Porta vetro doppia (già ordinata)","Installazione cabina (fine giugno)"],
      items:[
       {n:"Cabina armadio",s:"ordinato",note:"Ordinata il 16 mag"},
+      {n:"Mobile antibagno",s:"acquistato",note:"Arredatore"},
       {n:"Luci sopramobile",s:"acquistato"},
       {n:"LED COB 24V + profilo alluminio",s:"da-decidere",note:"Luci interne ripiani"},
     ]},
@@ -525,7 +541,7 @@ const DATA={
       {n:"Televisione 65\"",s:"da-scegliere"},
       {n:"Surround 5+1",s:"da-scegliere",blockBy:"valutare installazione",blockNote:"Prima dei mobili"},
       {n:"Divano",s:"da-scegliere"},
-      {n:"Tavolo + sedie",s:"da-scegliere"},
+      {n:"Tavolo sala + sedie",s:"acquistato",note:"Arredatore"},
       {n:"Applique sala",s:"da-scegliere"},
       {n:"Mobile TV",s:"da-scegliere"},
       {n:"Mobile vetrinetta",s:"da-scegliere"},
@@ -546,9 +562,6 @@ const DATA={
     ]},
   ],
   timeline:{
-    // giorno 0 = 11 maggio 2026
-    // giorno 23=3giu · 30=10giu · 32=12giu · 38=18giu · 41=21giu · 43=23giu
-    // giorno 45=25giu · 49=29giu · 58=8lug · 65=15lug · 72=22lug · 87=6ago
     totalDays:100,
     categories:[
       {label:"Elettricista",color:"#7c6af7",textColor:"#fff",phases:[
