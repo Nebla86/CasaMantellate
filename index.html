@@ -30,7 +30,7 @@
 ║  Font: Geist (body) + Geist Mono + Instrument Serif (display)        ║
 ║  Per aggiornare i colori: modificare le custom properties in :root   ║
 ║                                                                      ║
-║  ULTIMO AGGIORNAMENTO: 14 giugno 2026 (v7)                           ║
+║  ULTIMO AGGIORNAMENTO: 14 giugno 2026 (v8)                           ║
 ║                                                                      ║
 ║  STATO CANTIERE:                                                      ║
 ║  ACQUISTATI/ORDINATI: elettrodomestici ×6, tappezzeria camera,       ║
@@ -46,8 +46,9 @@
 ║    cucina 15+22 lug, posa top cucina 6 ago.                          ║
 ║                                                                      ║
 ║  GIORNI CHIAVE (day 0 = 11 mag 2026):                                ║
-║  23=3giu · 30=10giu · 32=12giu · 38=18giu · 41=21giu · 43=23giu    ║
-║  45=25giu · 49=29giu · 58=8lug · 65=15lug · 72=22lug · 87=6ago     ║
+║  23=3giu · 30=10giu · 32=12giu · 36=16giu · 38=18giu · 41=21giu    ║
+║  43=23giu · 45=25giu · 49=29giu · 54=4lug · 58=8lug · 65=15lug     ║
+║  72=22lug · 87=6ago                                                  ║
 ╚══════════════════════════════════════════════════════════════════════╝
 -->
 <style>
@@ -416,6 +417,10 @@ const DATA={
     {date:"14 giu 2026",text:"Lavabo + mobile bagno notte → acquistato (Arredatore)"},
     {date:"14 giu 2026",text:"Specchiera bagno giorno → acquistato (Arredatore)"},
     {date:"14 giu 2026",text:"Specchiera bagno notte → acquistato (Arredatore)"},
+    {date:"14 giu 2026",text:"Mansarda: piastrellatura confermata 16-17 giu — aggiunta in timeline"},
+    {date:"14 giu 2026",text:"Mansarda: progetto luci confermato 4 lug — aggiunto in timeline"},
+    {date:"14 giu 2026",text:"Mansarda: armadio eliminato (non entra)"},
+    {date:"14 giu 2026",text:"Mansarda: rimosse urgenze piastrellatura e luci — tutto pianificato"},
   ],
   rooms:[
     {id:"cucina",name:"Cucina",priority:"essenziale",
@@ -554,11 +559,10 @@ const DATA={
       {n:"Tende di tutta casa",s:"da-scegliere"},
     ]},
     {id:"mansarda",name:"Mansarda",priority:"importante",
-     lavori:["Scala retrattile a soffitto — installazione 18 giu"],
+     lavori:["Scala retrattile a soffitto — installazione 18 giu","Piastrellatura 16-17 giu","Luci — progetto 4 lug"],
      items:[
-      {n:"Luci mansarda",s:"da-scegliere",blockBy:"urgente",blockNote:"Decidere prima dell'installazione scala"},
-      {n:"Spostamento armadio",s:"da-scegliere",blockBy:"urgente",blockNote:"Coordinare con arrivo scala"},
-      {n:"Piastrellatura mansarda",s:"da-scegliere",blockBy:"urgente",blockNote:"Pianificare con impresa"},
+      {n:"Luci mansarda",s:"in-corso",note:"Progetto 4 lug"},
+      {n:"Piastrellatura mansarda",s:"in-corso",note:"16-17 giu"},
     ]},
   ],
   timeline:{
@@ -598,7 +602,9 @@ const DATA={
         {label:"Posa top cucina",s:87,d:1,note:"6 agosto"},
       ]},
       {label:"Mansarda",color:"#a855f7",textColor:"#fff",phases:[
-        {label:"Scala retrattile (installazione)",s:38,d:1,note:"18 giu · piastrellatura e luci TBD — urgente pianificare"},
+        {label:"Scala retrattile (installazione)",s:38,d:1,note:"18 giu"},
+        {label:"Piastrellatura mansarda",s:36,d:2,note:"16-17 giu"},
+        {label:"Progetto luci mansarda",s:54,d:1,note:"4 lug"},
       ]},
     ]
   }
